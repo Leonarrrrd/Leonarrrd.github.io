@@ -207,28 +207,27 @@
             Interaction Design · Discovering Requirements
         </div>
 
-        <!-- Project Goal (Customize this section) -->
+        <!-- Project Goal (Replace with your actual goal) -->
         <section>
             <h2>Project Goal</h2>
             <div class="goal-card">
                 <p>📌 Develop an interactive platform that helps university students efficiently find study partners, share learning resources, and collaborate on academic projects in a distraction‑free environment.</p>
-                <!-- ↑ Please replace with your actual project goal ↑ -->
             </div>
         </section>
 
-        <!-- Team Members (Updated with your group info) -->
+        <!-- Team Members -->
         <section>
             <h2>Team Members</h2>
             <div class="team-grid">
-                <!-- Member 1: Zicheng Niu -->
+                <!-- Zicheng Niu -->
                 <div class="member-card">
                     <img src="images/zicheng.jpg" alt="Zicheng Niu" class="avatar" onerror="this.src='https://via.placeholder.com/120'">
                     <div class="member-name">Zicheng Niu</div>
                     <div class="member-id">2362392</div>
-                    <div class="member-role">Front-end Developer</div>   <!-- Customize role -->
-                    <div class="member-bio">Passionate about creating responsive and accessible interfaces.</div> <!-- Customize bio -->
+                    <div class="member-role">Front-end Developer</div>
+                    <div class="member-bio">Passionate about creating responsive and accessible interfaces.</div>
                 </div>
-                <!-- Member 2: Weiyi Zheng -->
+                <!-- Weiyi Zheng -->
                 <div class="member-card">
                     <img src="images/weiyi.jpg" alt="Weiyi Zheng" class="avatar" onerror="this.src='https://via.placeholder.com/120'">
                     <div class="member-name">Weiyi Zheng</div>
@@ -236,7 +235,7 @@
                     <div class="member-role">UX Researcher</div>
                     <div class="member-bio">Enjoys conducting user interviews and translating insights into design.</div>
                 </div>
-                <!-- Member 3: Linghui Zhu -->
+                <!-- Linghui Zhu -->
                 <div class="member-card">
                     <img src="images/linghui.jpg" alt="Linghui Zhu" class="avatar" onerror="this.src='https://via.placeholder.com/120'">
                     <div class="member-name">Linghui Zhu</div>
@@ -244,7 +243,7 @@
                     <div class="member-role">UI Designer</div>
                     <div class="member-bio">Focused on visual design and prototyping with Figma.</div>
                 </div>
-                <!-- Member 4: Mariia Starostina -->
+                <!-- Mariia Starostina -->
                 <div class="member-card">
                     <img src="images/mariia.jpg" alt="Mariia Starostina" class="avatar" onerror="this.src='https://via.placeholder.com/120'">
                     <div class="member-name">Mariia Starostina</div>
@@ -255,14 +254,14 @@
             </div>
         </section>
 
-        <!-- User Personas (Customize these to fit your project) -->
+        <!-- User Personas (Replace with personas tailored to your project) -->
         <section>
             <h2>User Personas</h2>
             <div class="persona-grid">
-                <!-- Persona 1: Wang Xiaoming (example) -->
+                <!-- Persona 1 -->
                 <div class="persona-card">
                     <div class="persona-header">
-                        <img src="images/xiaoming.jpg" alt="Wang Xiaoming" class="persona-avatar" onerror="this.src='https://via.placeholder.com/100'">
+                        <img src="images/persona1.jpg" alt="Persona 1" class="persona-avatar" onerror="this.src='https://via.placeholder.com/100'">
                         <div class="persona-name">Wang Xiaoming</div>
                         <div class="persona-age-occ">22 · University Student (Computer Science)</div>
                     </div>
@@ -288,17 +287,17 @@
                         </div>
                     </div>
                 </div>
-                <!-- Persona 2: Li Fang (example) -->
+                <!-- Persona 2 -->
                 <div class="persona-card">
                     <div class="persona-header">
-                        <img src="images/lifang.jpg" alt="Li Fang" class="persona-avatar" onerror="this.src='https://via.placeholder.com/100'">
+                        <img src="images/persona2.jpg" alt="Persona 2" class="persona-avatar" onerror="this.src='https://via.placeholder.com/100'">
                         <div class="persona-name">Li Fang</div>
                         <div class="persona-age-occ">35 · High School Teacher</div>
                     </div>
                     <div class="persona-body">
                         <div class="persona-section">
                             <h4>Background</h4>
-                            <p>Busy teacher aiming to improve her teaching skills during碎片时间. Frequently uses tablet for learning.</p>
+                            <p>Busy teacher aiming to improve her teaching skills during spare time. Frequently uses a tablet for learning.</p>
                         </div>
                         <hr>
                         <div class="persona-section">
@@ -328,16 +327,11 @@
 
     <!-- 
         INSTRUCTIONS:
-        1. Create an 'images' folder in your GitHub Pages repository.
-        2. Upload the following头像 files (use exact names as in src, or modify src accordingly):
-           - zicheng.jpg (for Zicheng Niu)
-           - weiyi.jpg (for Weiyi Zheng)
-           - linghui.jpg (for Linghui Zhu)
-           - mariia.jpg (for Mariia Starostina)
-           - xiaoming.jpg (for Persona 1)
-           - lifang.jpg (for Persona 2)
-        3. If you don't have images, the placeholders will appear automatically.
-        4. Replace the project goal, member roles/bios, and persona details with your own content.
+        1. Create an 'images' folder in your repository.
+        2. Place member photos as: zicheng.jpg, weiyi.jpg, linghui.jpg, mariia.jpg.
+        3. Place persona photos as: persona1.jpg, persona2.jpg (or rename src accordingly).
+        4. Update the project goal, member roles/bios, and persona details to match your actual project.
+        5. Commit and push; your page will be available at https://<username>.github.io
     -->
 </body>
 </html>
