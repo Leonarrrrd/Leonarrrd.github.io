@@ -10,7 +10,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             background: white;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -18,12 +17,10 @@
             line-height: 1.5;
             padding: 2rem 1rem;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
         }
-
         h1 {
             font-size: 2.5rem;
             font-weight: 600;
@@ -31,7 +28,6 @@
             margin-bottom: 0.5rem;
             color: #0f172a;
         }
-
         .subhead {
             font-size: 1.2rem;
             color: #475569;
@@ -39,7 +35,6 @@
             border-left: 4px solid #3b82f6;
             padding-left: 1rem;
         }
-
         h2 {
             font-size: 1.8rem;
             font-weight: 600;
@@ -48,7 +43,6 @@
             border-bottom: 2px solid #e2e8f0;
             padding-bottom: 0.5rem;
         }
-
         .goal-card {
             background: #f8fafc;
             border-radius: 1rem;
@@ -57,19 +51,16 @@
             border: 1px solid #e2e8f0;
             box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05);
         }
-
         .goal-card p {
             font-size: 1.2rem;
             color: #334155;
         }
-
         .team-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 2rem;
             margin-bottom: 2rem;
         }
-
         .member-card {
             background: white;
             border-radius: 1rem;
@@ -79,12 +70,10 @@
             transition: all 0.2s ease;
             box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05);
         }
-
         .member-card:hover {
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
             transform: translateY(-2px);
         }
-
         .avatar {
             width: 120px;
             height: 120px;
@@ -94,38 +83,32 @@
             margin-bottom: 1rem;
             background: #e2e8f0;
         }
-
         .member-name {
             font-size: 1.4rem;
             font-weight: 600;
             margin-bottom: 0.25rem;
         }
-
         .member-id {
             font-family: monospace;
             color: #64748b;
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
         }
-
         .member-role {
             color: #3b82f6;
             font-weight: 500;
             margin-bottom: 0.75rem;
         }
-
         .member-bio {
             color: #475569;
             font-size: 0.95rem;
         }
-
         .persona-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
             margin-top: 1rem;
         }
-
         .persona-card {
             background: white;
             border-radius: 1rem;
@@ -133,14 +116,12 @@
             overflow: hidden;
             box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05);
         }
-
         .persona-header {
             background: #f1f5f9;
             padding: 1.5rem 1.5rem 1rem;
             text-align: center;
             border-bottom: 1px solid #e2e8f0;
         }
-
         .persona-avatar {
             width: 100px;
             height: 100px;
@@ -150,26 +131,21 @@
             margin-bottom: 0.75rem;
             background: #cbd5e1;
         }
-
         .persona-name {
             font-size: 1.6rem;
             font-weight: 600;
             line-height: 1.2;
         }
-
         .persona-age-occ {
             color: #475569;
             font-size: 1rem;
         }
-
         .persona-body {
             padding: 1.5rem;
         }
-
         .persona-section {
             margin-bottom: 1.2rem;
         }
-
         .persona-section h4 {
             font-size: 1rem;
             font-weight: 600;
@@ -178,17 +154,14 @@
             color: #64748b;
             margin-bottom: 0.3rem;
         }
-
         .persona-section p {
             color: #1e293b;
         }
-
         hr {
             border: none;
             border-top: 1px solid #e2e8f0;
             margin: 0.5rem 0 1rem;
         }
-
         .footer {
             margin-top: 4rem;
             text-align: center;
@@ -206,7 +179,6 @@
         <div class="subhead">
             Interaction Design · Discovering Requirements
         </div>
-
         <!-- Project Goal (Replace with your actual goal) -->
         <section>
             <h2>Project Goal</h2>
@@ -214,7 +186,6 @@
                 <p>📌 Develop an interactive platform that helps university students efficiently find study partners, share learning resources, and collaborate on academic projects in a distraction‑free environment.</p>
             </div>
         </section>
-
         <!-- Team Members -->
         <section>
             <h2>Team Members</h2>
@@ -253,7 +224,6 @@
                 </div>
             </div>
         </section>
-
         <!-- User Personas (Replace with personas tailored to your project) -->
         <section>
             <h2>User Personas</h2>
@@ -318,13 +288,11 @@
                 </div>
             </div>
         </section>
-
         <!-- Footer -->
         <div class="footer">
             C3-3 · Interaction Design · 2026
         </div>
     </div>
-
     <!-- 
         INSTRUCTIONS:
         1. Create an 'images' folder in your repository.
