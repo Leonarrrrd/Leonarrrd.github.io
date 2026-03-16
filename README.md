@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C3-3 · CPT208 Group</title>
+    <title> C3-3 · CPT208 Group </title>
     <style>
         * {
             margin: 0;
@@ -174,132 +174,133 @@
 </head>
 <body>
     <div class="container">
-        <!-- Group Header -->
+        <!-- 小组标题 -->
         <h1>C3-3 · CPT208 Group</h1>
         <div class="subhead">
             Interaction Design · Discovering Requirements
         </div>
-        Go Training APP
+        <!-- ========== 项目目标（请替换为你们小组的实际目标） ========== -->
         <section>
             <h2>Project Goal</h2>
             <div class="goal-card">
                 <p>📌 Develop an interactive platform that helps university students efficiently find study partners, share learning resources, and collaborate on academic projects in a distraction‑free environment.</p>
+                <!-- ↑ 请将上面这段英文替换为你们小组的项目目标（英文） ↑ -->
             </div>
         </section>
-        <!-- Team Members -->
+        <!-- ========== 小组成员（请替换角色与简介） ========== -->
         <section>
             <h2>Team Members</h2>
             <div class="team-grid">
-                <!-- Zicheng Niu -->
+                <!-- 成员1：Zicheng Niu（请确保 images/zicheng.jpg 存在，或修改文件名） -->
                 <div class="member-card">
                     <img src="images/zicheng.jpg" alt="Zicheng Niu" class="avatar" onerror="this.src='https://via.placeholder.com/120'">
                     <div class="member-name">Zicheng Niu</div>
                     <div class="member-id">2362392</div>
-                    <div class="member-role">Front-end Developer</div>
-                    <div class="member-bio">Passionate about creating responsive and accessible interfaces.</div>
+                    <div class="member-role">Front-end Developer</div>   <!-- 请替换为实际角色 -->
+                    <div class="member-bio">Passionate about creating responsive and accessible interfaces.</div> <!-- 请替换为个人简介 -->
                 </div>
-                <!-- Weiyi Zheng -->
+                <!-- 成员2：Weiyi Zheng -->
                 <div class="member-card">
                     <img src="images/weiyi.jpg" alt="Weiyi Zheng" class="avatar" onerror="this.src='https://via.placeholder.com/120'">
                     <div class="member-name">Weiyi Zheng</div>
                     <div class="member-id">2361878</div>
-                    <div class="member-role">UX Researcher</div>
-                    <div class="member-bio">Enjoys conducting user interviews and translating insights into design.</div>
+                    <div class="member-role">UX Researcher</div>          <!-- 请替换 -->
+                    <div class="member-bio">Enjoys conducting user interviews and translating insights into design.</div> <!-- 请替换 -->
                 </div>
-                <!-- Linghui Zhu -->
+                <!-- 成员3：Linghui Zhu -->
                 <div class="member-card">
                     <img src="images/linghui.jpg" alt="Linghui Zhu" class="avatar" onerror="this.src='https://via.placeholder.com/120'">
                     <div class="member-name">Linghui Zhu</div>
                     <div class="member-id">2363060</div>
-                    <div class="member-role">UI Designer</div>
-                    <div class="member-bio">Focused on visual design and prototyping with Figma.</div>
+                    <div class="member-role">UI Designer</div>            <!-- 请替换 -->
+                    <div class="member-bio">Focused on visual design and prototyping with Figma.</div> <!-- 请替换 -->
                 </div>
-                <!-- Mariia Starostina -->
+                <!-- 成员4：Mariia Starostina -->
                 <div class="member-card">
                     <img src="images/mariia.jpg" alt="Mariia Starostina" class="avatar" onerror="this.src='https://via.placeholder.com/120'">
                     <div class="member-name">Mariia Starostina</div>
                     <div class="member-id">2583073</div>
-                    <div class="member-role">Back-end Developer</div>
-                    <div class="member-bio">Experienced in database management and API integration.</div>
+                    <div class="member-role">Back-end Developer</div>    <!-- 请替换 -->
+                    <div class="member-bio">Experienced in database management and API integration.</div> <!-- 请替换 -->
                 </div>
             </div>
         </section>
-        goal users
+        <!-- ========== 人物角色（请根据项目生成并替换以下所有内容） ========== -->
         <section>
             <h2>User Personas</h2>
             <div class="persona-grid">
-                <!-- Persona 1 -->
+                <!-- 角色1：王小明（请替换姓名、年龄职业、背景、目标、痛点、行为） -->
                 <div class="persona-card">
                     <div class="persona-header">
                         <img src="images/persona1.jpg" alt="Persona 1" class="persona-avatar" onerror="this.src='https://via.placeholder.com/100'">
-                        <div class="persona-name">Wang Xiaoming</div>
-                        <div class="persona-age-occ">22 · University Student (Computer Science)</div>
+                        <div class="persona-name">Wang Xiaoming</div>                <!-- 替换姓名 -->
+                        <div class="persona-age-occ">22 · University Student (Computer Science)</div> <!-- 替换年龄/职业 -->
                     </div>
                     <div class="persona-body">
                         <div class="persona-section">
                             <h4>Background</h4>
-                            <p>Third‑year undergrad who loves learning new tech skills through mobile apps. Active on online forums but finds them too noisy.</p>
+                            <p>Third‑year undergrad who loves learning new tech skills through mobile apps. Active on online forums but finds them too noisy.</p> <!-- 替换背景 -->
                         </div>
                         <hr>
                         <div class="persona-section">
                             <h4>Goals</h4>
-                            <p>Quickly find like‑minded study partners for coding projects and exam prep.</p>
+                            <p>Quickly find like‑minded study partners for coding projects and exam prep.</p> <!-- 替换目标 -->
                         </div>
                         <hr>
                         <div class="persona-section">
                             <h4>Pain Points</h4>
-                            <p>Existing platforms are cluttered with irrelevant content; matching is imprecise and time‑consuming.</p>
+                            <p>Existing platforms are cluttered with irrelevant content; matching is imprecise and time‑consuming.</p> <!-- 替换痛点 -->
                         </div>
                         <hr>
                         <div class="persona-section">
                             <h4>Behaviour</h4>
-                            <p>Studies late at night, prefers minimalistic interfaces, and relies on push notifications.</p>
+                            <p>Studies late at night, prefers minimalistic interfaces, and relies on push notifications.</p> <!-- 替换行为特征 -->
                         </div>
                     </div>
                 </div>
-                <!-- Persona 2 -->
+                <!-- 角色2：李芳（请替换所有内容） -->
                 <div class="persona-card">
                     <div class="persona-header">
                         <img src="images/persona2.jpg" alt="Persona 2" class="persona-avatar" onerror="this.src='https://via.placeholder.com/100'">
-                        <div class="persona-name">Li Fang</div>
-                        <div class="persona-age-occ">35 · High School Teacher</div>
+                        <div class="persona-name">Li Fang</div>                      <!-- 替换姓名 -->
+                        <div class="persona-age-occ">35 · High School Teacher</div>  <!-- 替换年龄/职业 -->
                     </div>
                     <div class="persona-body">
                         <div class="persona-section">
                             <h4>Background</h4>
-                            <p>Busy teacher aiming to improve her teaching skills during spare time. Frequently uses a tablet for learning.</p>
+                            <p>Busy teacher aiming to improve her teaching skills during spare time. Frequently uses a tablet for learning.</p> <!-- 替换背景 -->
                         </div>
                         <hr>
                         <div class="persona-section">
                             <h4>Goals</h4>
-                            <p>Access high‑quality teaching resources and exchange ideas with fellow educators.</p>
+                            <p>Access high‑quality teaching resources and exchange ideas with fellow educators.</p> <!-- 替换目标 -->
                         </div>
                         <hr>
                         <div class="persona-section">
                             <h4>Pain Points</h4>
-                            <p>Too little time to filter through massive content; needs personalised recommendations.</p>
+                            <p>Too little time to filter through massive content; needs personalised recommendations.</p> <!-- 替换痛点 -->
                         </div>
                         <hr>
                         <div class="persona-section">
                             <h4>Behaviour</h4>
-                            <p>Uses iPad during commute, prefers video tutorials and concise summaries.</p>
+                            <p>Uses iPad during commute, prefers video tutorials and concise summaries.</p> <!-- 替换行为特征 -->
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- Footer -->
+        <!-- 页脚（可选） -->
         <div class="footer">
             C3-3 · Interaction Design · 2026
         </div>
     </div>
+
     <!-- 
-        INSTRUCTIONS:
-        1. Create an 'images' folder in your repository.
-        2. Place member photos as: zicheng.jpg, weiyi.jpg, linghui.jpg, mariia.jpg.
-        3. Place persona photos as: persona1.jpg, persona2.jpg (or rename src accordingly).
-        4. Update the project goal, member roles/bios, and persona details to match your actual project.
-        5. Commit and push; your page will be available at https://<username>.github.io
+        图片使用说明：
+        1. 在仓库根目录创建 images 文件夹。
+        2. 成员头像请分别命名为：zicheng.jpg, weiyi.jpg, linghui.jpg, mariia.jpg（如果格式为png请对应修改后缀）。
+        3. 人物角色头像请命名为：persona1.jpg, persona2.jpg（或根据实际修改src）。
+        4. 如果暂时没有图片，onerror 会自动显示灰色占位图，不影响布局。
     -->
 </body>
 </html>
