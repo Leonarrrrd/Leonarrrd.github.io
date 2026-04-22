@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LevelUP Process Portfolio - C3-3</title>
+    <style>
+
+        .image-row {
+        display: flex;       /* 开启弹性盒布局，让内容排成一行 */
+        gap: 8px;          /* 每张图片之间的间距，可自行调整 */
+        width: 100%;         /* 容器占满全宽 */
+        margin-bottom: 10px; /* 底部留点空白 */
+    }
+
+    /* 容器内每张图片的样式 */
+    .image-row img {
+        flex: 1;             /* 关键：让 5 张图平分可用宽度（每张占20%） */
+        width: 10%;          /* 配合 flex:1 使用，防止大图撑破容器 */
+        aspect-ratio: 1 / 1; /* 让图片保持正方形 (可修改为 4/3 或 16/9) */
+        object-fit: cover;   /* 关键：截取图片中间部分，保证图片不被拉伸变形 */
+        border-radius: 8px;  /* 加个圆角更好看 */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 加一点淡淡的阴影 */
+    }
+    /* 修正后的 CrazyEights 容器样式 */
+.image-CrazyEights {
+    width: 100%;             /* 容器占据 100% 宽度 */
+    display: flex;           /* 开启弹性布局 */
+    justify-content: center;  /* 图片居中显示 */
+    margin: 20px 0;          /* 上下留出 20px 间距 */
+}
+
+/* 修正后的图片样式 */
+.image-CrazyEights img {
+    width: 100%;         /* 图片最大宽度不超过容器 */
+    height: auto;            /* 高度自适应，防止变形 */
+    border-radius: 12px;     /* 保持圆角风格一致 */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* 添加轻微阴影提升质感 */
+    border: 1px solid #e2e8f0; /* 添加细边框，适应白底图片 */
+}
+
+/* 迭代项的容器 */
+.iteration-item {
+    text-align: center; /* 文字居中 */
+}
+
+/* 说明文字样式 */
+.caption {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-top: 10px;
+    line-height: 1.4;
+    padding: 0 10px;
+}
+
+.caption strong {
+    color: #1e293b;
+}
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f8fafc; font-family: 'Inter', sans-serif; color: #1e293b; line-height: 1.6; padding: 2rem 1rem; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 3rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; color: #0f172a; text-align: center;}
+        .subhead { font-size: 1.2rem; color: #64748b; margin-bottom: 3rem; text-align: center;}
+        h2 { font-size: 1.8rem; font-weight: 600; margin: 2.5rem 0 1.5rem; color: #3b82f6; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
+        h3 { font-size: 1.3rem; font-weight: 600; margin: 1.5rem 0 1rem; color: #0f172a; }
+        p { margin-bottom: 1rem; color: #475569; }
+        ul, ol { margin-bottom: 1.5rem; padding-left: 1.5rem; color: #475569; }
+        li { margin-bottom: 0.5rem; }
+        
+        /* 表格样式 */
+        table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        th { background: #f1f5f9; font-weight: 600; color: #0f172a; }
+        
+        /* 占位图盒子 */
+        .image-placeholder { width: 100%; background: #e2e8f0; border: 2px dashed #94a3b8; border-radius: 8px; padding: 3rem 1rem; text-align: center; color: #64748b; margin-bottom: 1.5rem; font-weight: 500;}
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        
+        /* Persona 卡片 */
+        .persona-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; }
+        .persona-name { font-size: 1.4rem; font-weight: bold; color: #0f172a; margin-bottom: 0.5rem; }
+        .tag { display: inline-block; background: #dbeafe; color: #1d4ed8; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; margin-right: 0.5rem; margin-bottom: 1rem;}
+        
+        /* 链接按钮 */
+        .btn { display: inline-block; background: #3b82f6; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; margin-right: 10px; margin-bottom: 1rem;}
+        .btn:hover { background: #2563eb; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LevelUP: Gamified Fitness Tracker</h1>
+        <div class="subhead">CPT208 Group C3-3 · Process Portfolio</div>
+
+        <!-- ================= 1. Motivation & Research ================= -->
+        <h2>1. Motivation & Research</h2>
+        
+        <h3>The Why</h3>
+        <p> Our team discovered that many people face three core obstacles in their fitness journey: a disconnect between diet plans and training goals, a lack of standardized references for exercise execution, and difficulty in correlating weight changes with daily behavior. Users often don't know what to eat that day, have blind spots in their understanding of standard movements, and cannot correct their posture through textual descriptions alone, while hiring a personal trainer is too expensive. The numbers on the scale don't connect logically, triggering anxiety or leading to giving up. This results in difficulty sticking to the routine, poor results, and even injuries. We believe that only by addressing these real pain points can we design truly useful products. Therefore, we decided to develop software that integrates diet planning, a professional exercise library, fitness plans, and weight monitoring, allowing users to receive closed-loop guidance on a single platform: providing healthy eating plans, accompanying animated standard movement exercises, and displaying weight trends. We believe that only by connecting the data chain of "eat-train-monitor" can health management become executable, traceable, and sustainable. This is our team's response to "making technology serve real needs."</p>
+        
+        <h3>The Gap</h3>
+        <p>After analyzing 4 academic papers on gamified health and 4 commercial products (like Keep, Elevate, BatterMe, Fitness), we identified:
+        </p>
+        <div class="grid-2">
+            <div>
+                <h4>3 Things They Did Well:</h4>
+                <ul>
+                    <li>Achievement system to motivate users to persevere and work hard</li>
+                    <li>Supports the generation of personalized professional diet plans</li>
+                    <li>Motion video analysis</li>
+                </ul>
+            </div>
+            <div>
+                <h4>3 Things They Missed:</h4>
+                <ul>
+                    <li>Weak real-time correction of movement errors</li>
+                    <li>Lack of weight monitoring and dynamic adjustment of training plans</li>
+                    <li>Insufficient integration of diet and training data</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>The Stakeholders (Personas)</h3>
+        <div class="grid-2">
+            <div class="persona-card">
+                <div class="persona-name">Alex - The Gamified Beginner</div>
+                <span class="tag">Needs Motivation</span> <span class="tag">Goal-Oriented</span>
+                <p><strong>Bio:</strong> A 26-year-old office worker who struggles to maintain a workout habit. Traditional fitness apps bore him.</p>
+                <p><strong>Goals:</strong> Build a consistent habit through engaging, game-like rewards.</p>
+                <p><strong>Must-use Features:</strong> XP System, Trophy Room, Daily Streak Calendar.</p>
+            </div>
+            <div class="persona-card">
+                <div class="persona-name">Sarah - The Data-Driven Optimizer</div>
+                <span class="tag">Disciplined</span> <span class="tag">Analytical</span>
+                <p><strong>Bio:</strong> A 30-year-old marketing manager who works out 4 times a week. She needs precise tracking for progressive overload.</p>
+                <p><strong>Goals:</strong> Track TDEE accurately and log precise sets/reps without wasting time.</p>
+                <p><strong>Must-use Features:</strong> TDEE Calculator, Heart Rate Tracker, Detailed Workout Logs.</p>
+            </div>
+        </div>
+
+        <!-- ================= 2. User Requirements ================= -->
+        <h2>2. User Requirements</h2>
+        
+        <h3>User Journey Map</h3>
+        <div class="image-CrazyEights">
+            <img src="images/UserJourneyMap.png" alt="User Journey Map">
+        </div>
+
+        <h3>Requirements List (3 Must-Haves for "Playful")</h3>
+        <ul>
+            <li><strong>Gamified Progression (XP & Streaks):</strong> Users earn XP for completing workouts to "Level Up" their profile, and maintain streaks to build habits.</li>
+            <li><strong>Achievement System (Trophies):</strong> Unlockable bronze/silver/gold badges for reaching milestones (e.g., 30 workouts, 1000 XP).</li>
+            <li><strong>Interactive Progress Visualization:</strong> A visual calendar highlighting successful days and weight changes dynamically.</li>
+        </ul>
+
+        <h3>Evidence of Life</h3>
+        <div class="image-row">
+    <!-- 请把 src 里的路径换成你自己的图片路径 -->
+    <img src="images/survey1.jpg" alt="Evidence 1">
+    <img src="images/survey2.jpg" alt="Evidence 2">
+    <img src="images/survey3.jpg" alt="Evidence 3">
+    <img src="images/survey4.jpg" alt="Evidence 4">
+    <img src="images/survey5.jpg" alt="Evidence 5">
+</div>
+        <!-- ================= 3. Ideation & Alternatives ================= -->
+        <h2>3. Ideation & Alternatives</h2>
+        
+        <h3>The "Crazy Eights"</h3>
+        <div class="image-CrazyEights">
+            <img src="images/CrazyEights.png" alt="Crazy Eights Sketches">
+        </div>
+
+        <h3>Design Alternatives</h3>
+        <p><strong>Alternative 1:</strong> A dashboard focused entirely on charts and graphs. (Rejected: Too boring for beginners, lacks the "Playful" requirement).</p>
+        <p><strong>Alternative 2 (Chosen):</strong> A profile-centric UI where the user's Avatar, Level, and Trophies are prominent, blending hard data (TDEE, heart rate) with gamification.</p>
+
+        <h3>Low-Fi Prototype</h3>
+        <a href="https://www.figma.com/design/nBbG9Cz0wf6sQEDdsPvOKb/LevelUP?node-id=59-207&t=buSc4Sm1JERQZGi5-1" class="btn" target="_blank">View Figma Low-Fi Prototype</a>
+
+        <!-- ================= 4. Technical Implementation ================= -->
+        <h2>4. Technical Implementation</h2>
+        
+        <a href="#" class="btn" target="_blank">View Live Web App (High-Fi)</a>
+        <a href="#" class="btn" style="background:#1e293b;" target="_blank">GitHub Repository</a>
+
+        <h3>System Architecture & Data Handling</h3>
+        <div class="image-CrazyEights">
+            <img src="images/SystemArchitecture.png" alt="System Architecture">
+        </div>
+        <div class="image-CrazyEights">
+            <img src="images/DataHandling.png" alt="Data Handling">
+        </div>
+
+        <h3>Individual Contributions</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name / ID</th>
+                    <th>Role & Specific Tasks Built</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Zicheng Niu</strong> (2362392)</td>
+                    <td><strong>Frontend Code & UI:</strong> Built responsive views (signin, signup, profile), implemented tab-bars, and calendar logic.</td>
+                </tr>
+                <tr>
+                    <td><strong>Weiyi Zheng</strong> (2361878)</td>
+                    <td><strong>UX Research & Testing:</strong> Conducted usability tests, created personas, defined the "playful" requirements.</td>
+                </tr>
+                <tr>
+                    <td><strong>Linghui Zhu</strong> (2363060)</td>
+                    <td><strong>UI Design & Content:</strong> Designed Figma prototypes, created vector assets (trophies, icons), established style guide.</td>
+                </tr>
+                <tr>
+                    <td><strong>Mariia Starostina</strong> (2583073)</td>
+                    <td><strong>Backend Code & Database:</strong> Implemented Spring Boot APIs, designed MySQL schema for User, Trophies, and Workouts.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ================= 5. Evaluation & Reflection ================= -->
+        <h2>5. Evaluation & Reflection</h2>
+        
+        <h3>Usability Testing</h3>
+        <p>Tested the "Alpha" version with 3 real users at the local gym. Key findings:</p>
+        <ul>
+            <li>User 1 found the weight logging button hard to find.</li>
+            <li>User 2 loved the Trophy system but didn't understand the TDEE calculation at first glance.</li>
+            <li>User 3 requested a fixed bottom tab-bar for easier navigation on mobile.</li>
+        </ul>
+
+       <h3>Iterative Refinement (Before & After)</h3>
+<div class="grid-2">
+    <!-- 左侧：Before -->
+    <div class="iteration-item">
+        <div class="image-CrazyEights">
+            <img src="images/Before.png" alt="Before: Initial UI">
+        </div>
+        <p class="caption"><strong>Before:</strong> Cluttered layout with poor visual hierarchy and navigation issues.</p>
+    </div>
+    
+    <!-- 右侧：After -->
+    <div class="iteration-item">
+        <div class="image-CrazyEights">
+            <img src="images/After.png" alt="After: Final UI">
+        </div>
+        <p class="caption"><strong>After:</strong> Fixed navigation, clear error handling, and optimized layout for notch screens.</p>
+    </div>
+</div>
+
+        
+
+        <h3>Final Reflection</h3>
+        <p><strong>Social/Ethical Implications:</strong> We ensured our system promotes healthy habits rather than obsessive tracking by focusing on positive reinforcement (XP) instead of penalizing missed days heavily. </p>
+        <p><strong>Use of AI:</strong> Generative AI was used strictly according to permissions to assist in debugging CSS flexbox issues and generating SQL mock data (Vibe Coding logs are included in the GitHub <code>/ai-logs</code> folder).</p>
+
+    </div>
+</body>
+</html>
