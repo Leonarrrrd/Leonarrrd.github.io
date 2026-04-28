@@ -226,16 +226,25 @@ public class WorkoutController {
     }
 
     @PostMapping("/generate-confirm")
-    public String generateConfirm(@RequestParam Long templateId, HttpSession session) {
+    public String generateConfirm(@RequestParam Long templateId, 
+                                  @RequestParam(required = false) List<Long> exerciseIds, // 【新增】接收具体的动作ID
+                                  HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
         if (user == null) return "redirect:/signin";
 
-        Map<Long, String> templateToMuscle = Map.of(
-            1L, "Chest", 2L, "Back", 3L, "Shoulders",
-            4L, "Legs", 5L, "Arms", 6L, "Abs"
-        );
-        String mg = templateToMuscle.getOrDefault(templateId, "Chest");
-        workoutService.generatePlanByMuscleGroups(user.getId(), List.of(mg));
+        
+        if (exerciseIds != null && !exerciseIds.isEmpty()) {
+            workoutService.generatePlanFromExercises(user.getId(), exerciseIds);
+        } else {
+            
+            Map<Long, String> templateToMuscle = Map.of(
+                1L, "Chest", 2L, "Back", 3L, "Shoulders",
+                4L, "Legs", 5L, "Arms", 6L, "Abs"
+            );
+            String mg = templateToMuscle.getOrDefault(templateId, "Chest");
+            workoutService.generatePlanByMuscleGroups(user.getId(), List.of(mg));
+        }
+        
         return "redirect:/workouts";
     }
 }
