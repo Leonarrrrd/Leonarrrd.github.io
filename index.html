@@ -6,56 +6,77 @@
     <title>LevelUP Process Portfolio - C3-3</title>
     <style>
 
+        /* ==== 修改后的 Evidence 图片布局 (上三下二) ==== */
         .image-row {
-        display: flex;       /* 开启弹性盒布局，让内容排成一行 */
-        gap: 8px;          /* 每张图片之间的间距，可自行调整 */
-        width: 100%;         /* 容器占满全宽 */
-        margin-bottom: 10px; /* 底部留点空白 */
-    }
+            display: flex;
+            flex-wrap: wrap;         /* 关键：允许换行 */
+            gap: 15px;               /* 间距 */
+            width: 100%;
+            margin-bottom: 10px;
+            justify-content: center; /* 关键：让第二排的2张图自动居中 */
+        }
 
-    /* 容器内每张图片的样式 */
-    .image-row img {
-        flex: 1;             /* 关键：让 5 张图平分可用宽度（每张占20%） */
-        width: 10%;          /* 配合 flex:1 使用，防止大图撑破容器 */
-        aspect-ratio: 1 / 1; /* 让图片保持正方形 (可修改为 4/3 或 16/9) */
-        object-fit: cover;   /* 关键：截取图片中间部分，保证图片不被拉伸变形 */
-        border-radius: 8px;  /* 加个圆角更好看 */
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 加一点淡淡的阴影 */
-    }
-    /* 修正后的 CrazyEights 容器样式 */
-.image-CrazyEights {
-    width: 100%;             /* 容器占据 100% 宽度 */
-    display: flex;           /* 开启弹性布局 */
-    justify-content: center;  /* 图片居中显示 */
-    margin: 20px 0;          /* 上下留出 20px 间距 */
-}
+        .image-row img {
+            /* 关键：一行3张图，自动减去 gap 的分配宽度 */
+            width: calc(33.333% - 10px); 
+            aspect-ratio: 4 / 3;     /* 保持相片比例 */
+            object-fit: cover;       /* 裁剪多余部分，保证不拉伸变形 */
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        /* ============================================== */
+        
+        /* 迭代Before/After 容器样式 */
+        .image-CrazyEights {
+            width: 100%;             /* 容器占据 100% 宽度 */
+            display: flex;           /* 开启弹性布局 */
+            justify-content: center; /* 图片居中显示 */
+            margin: 20px 0;          /* 上下留出 20px 间距 */
+        }
 
-/* 修正后的图片样式 */
-.image-CrazyEights img {
-    width: 100%;         /* 图片最大宽度不超过容器 */
-    height: auto;            /* 高度自适应，防止变形 */
-    border-radius: 12px;     /* 保持圆角风格一致 */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* 添加轻微阴影提升质感 */
-    border: 1px solid #e2e8f0; /* 添加细边框，适应白底图片 */
-}
+        .image-CrazyEights img {
+            max-width: 100%;         /* 图片最大宽度不超过容器 */
+            height: auto;            /* 高度自适应，防止变形 */
+            border-radius: 12px;     /* 保持圆角风格一致 */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* 添加轻微阴影提升质感 */
+            border: 1px solid #e2e8f0; /* 添加细边框，适应白底图片 */
+        }
 
-/* 迭代项的容器 */
-.iteration-item {
-    text-align: center; /* 文字居中 */
-}
+        /* ==== 用于 Crazy Eights (8张图：上四下四长方形排版) ==== */
+        .grid-4 { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); /* 强制分为4列 */
+            gap: 15px; /* 图片之间的间隙 */
+            margin-bottom: 2rem;
+        }
 
-/* 说明文字样式 */
-.caption {
-    font-size: 0.9rem;
-    color: #64748b;
-    margin-top: 10px;
-    line-height: 1.4;
-    padding: 0 10px;
-}
+        .grid-4 img {
+            width: 100%;
+            aspect-ratio: 3 / 4; /* 强制图片显示为竖向长方形(手机拍照常用比例) */
+            object-fit: cover; /* 裁剪多余部分，保证网格对齐且不拉伸变形 */
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+        /* ============================================== */
 
-.caption strong {
-    color: #1e293b;
-}
+        /* 迭代项的容器 */
+        .iteration-item {
+            text-align: center; /* 文字居中 */
+        }
+
+        /* 说明文字样式 */
+        .caption {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 10px;
+            line-height: 1.4;
+            padding: 0 10px;
+        }
+
+        .caption strong {
+            color: #1e293b;
+        }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #f8fafc; font-family: 'Inter', sans-serif; color: #1e293b; line-height: 1.6; padding: 2rem 1rem; }
@@ -64,6 +85,7 @@
         .subhead { font-size: 1.2rem; color: #64748b; margin-bottom: 3rem; text-align: center;}
         h2 { font-size: 1.8rem; font-weight: 600; margin: 2.5rem 0 1.5rem; color: #3b82f6; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
         h3 { font-size: 1.3rem; font-weight: 600; margin: 1.5rem 0 1rem; color: #0f172a; }
+        h4 { font-size: 1.1rem; font-weight: 600; margin: 1rem 0 0.5rem; color: #1e293b; }
         p { margin-bottom: 1rem; color: #475569; }
         ul, ol { margin-bottom: 1.5rem; padding-left: 1.5rem; color: #475569; }
         li { margin-bottom: 0.5rem; }
@@ -73,8 +95,6 @@
         th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
         th { background: #f1f5f9; font-weight: 600; color: #0f172a; }
         
-        /* 占位图盒子 */
-        .image-placeholder { width: 100%; background: #e2e8f0; border: 2px dashed #94a3b8; border-radius: 8px; padding: 3rem 1rem; text-align: center; color: #64748b; margin-bottom: 1.5rem; font-weight: 500;}
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         
         /* Persona 卡片 */
@@ -96,11 +116,10 @@
         <h2>1. Motivation & Research</h2>
         
         <h3>The Why</h3>
-        <p> Our team discovered that many people face three core obstacles in their fitness journey: a disconnect between diet plans and training goals, a lack of standardized references for exercise execution, and difficulty in correlating weight changes with daily behavior. Users often don't know what to eat that day, have blind spots in their understanding of standard movements, and cannot correct their posture through textual descriptions alone, while hiring a personal trainer is too expensive. The numbers on the scale don't connect logically, triggering anxiety or leading to giving up. This results in difficulty sticking to the routine, poor results, and even injuries. We believe that only by addressing these real pain points can we design truly useful products. Therefore, we decided to develop software that integrates diet planning, a professional exercise library, fitness plans, and weight monitoring, allowing users to receive closed-loop guidance on a single platform: providing healthy eating plans, accompanying animated standard movement exercises, and displaying weight trends. We believe that only by connecting the data chain of "eat-train-monitor" can health management become executable, traceable, and sustainable. This is our team's response to "making technology serve real needs."</p>
+        <p>Our team discovered that many people face three core obstacles in their fitness journey: a disconnect between diet plans and training goals, a lack of standardized references for exercise execution, and difficulty in correlating weight changes with daily behavior. Users often don't know what to eat that day, have blind spots in their understanding of standard movements, and cannot correct their posture through textual descriptions alone, while hiring a personal trainer is too expensive. The numbers on the scale don't connect logically, triggering anxiety or leading to giving up. This results in difficulty sticking to the routine, poor results, and even injuries. We believe that only by addressing these real pain points can we design truly useful products. Therefore, we decided to develop software that integrates diet planning, a professional exercise library, fitness plans, and weight monitoring, allowing users to receive closed-loop guidance on a single platform: providing healthy eating plans, accompanying animated standard movement exercises, and displaying weight trends. We believe that only by connecting the data chain of "eat-train-monitor" can health management become executable, traceable, and sustainable. This is our team's response to "making technology serve real needs."</p>
         
         <h3>The Gap</h3>
-        <p>After analyzing 4 academic papers on gamified health and 4 commercial products (like Keep, Elevate, BatterMe, Fitness), we identified:
-        </p>
+        <p>After analyzing 4 academic papers on gamified health — Sun et al.’s (2025) “Is more always better? An S-shaped impact of gamification feature richness on exercise adherence intention,” Alzghoul’s (2024) “The Effectiveness of Gamification in Changing Health-related Behaviors,” dos Santos et al.’s (2023) “Gamification as a health education strategy of adolescents at school: Protocol for a systematic review and meta-analysis,” and Quan et al.’s (2022) “Factors Influencing Users’ Continuance Intention to Use Mobile Fitness APPs” — and 4 commercial products (like Keep, Elevate, BetterMe, Fitness), we identified:</p>
         <div class="grid-2">
             <div>
                 <h4>3 Things They Did Well:</h4>
@@ -134,7 +153,7 @@
                 <span class="tag">Disciplined</span> <span class="tag">Analytical</span>
                 <p><strong>Bio:</strong> A 30-year-old marketing manager who works out 4 times a week. She needs precise tracking for progressive overload.</p>
                 <p><strong>Goals:</strong> Track TDEE accurately and log precise sets/reps without wasting time.</p>
-                <p><strong>Must-use Features:</strong> TDEE Calculator, Heart Rate Tracker, Detailed Workout Logs.</p>
+                <p><strong>Must-use Features:</strong> TDEE Calculator, Detailed Workout Logs.</p>
             </div>
         </div>
 
@@ -150,32 +169,40 @@
         <ul>
             <li><strong>Gamified Progression (XP & Streaks):</strong> Users earn XP for completing workouts to "Level Up" their profile, and maintain streaks to build habits.</li>
             <li><strong>Achievement System (Trophies):</strong> Unlockable bronze/silver/gold badges for reaching milestones (e.g., 30 workouts, 1000 XP).</li>
-            <li><strong>Interactive Progress Visualization:</strong> A visual calendar highlighting successful days and weight changes dynamically.</li>
+            <li><strong>Virtual Pet:</strong> A virtual pet that evolves through a few stages based on workout consistency.</li>
         </ul>
 
-        <h3>Evidence of Life</h3>
+       <h3>Evidence of Life</h3>
         <div class="image-row">
-    <!-- 请把 src 里的路径换成你自己的图片路径 -->
-    <img src="images/survey1.jpg" alt="Evidence 1">
-    <img src="images/survey2.jpg" alt="Evidence 2">
-    <img src="images/survey3.jpg" alt="Evidence 3">
-    <img src="images/survey4.jpg" alt="Evidence 4">
-    <img src="images/survey5.jpg" alt="Evidence 5">
-</div>
+            <img src="images/survey1.jpg" alt="Interview Photo 1">
+            <img src="images/survey2.jpg" alt="Interview Photo 2">
+            <img src="images/survey3.jpg" alt="Interview Photo 3">
+            <img src="images/survey4.jpg" alt="Interview Photo 4">
+            <img src="images/survey5.jpg" alt="Interview Photo 5">
+        </div>
         <p style="margin-top: 1rem; font-style: italic; color: #64748b;">
-            <strong>Survey Data:</strong> We conducted a quantitative survey with 11 participants to validate these pain points. The results (shown above) confirmed that 63% of users struggle with exercise form correction without a personal trainer, highlighting the need for a standardized visual library.
+            <strong>Survey Data:</strong> We conducted a quantitative survey with 11 participants to validate these pain points. The results confirmed that 63% of users struggle with exercise form correction without a personal trainer, highlighting the need for a standardized visual library.
         </p>
+
         <!-- ================= 3. Ideation & Alternatives ================= -->
         <h2>3. Ideation & Alternatives</h2>
         
         <h3>The "Crazy Eights"</h3>
-        <div class="image-CrazyEights">
-            <img src="images/CrazyEights.png" alt="Crazy Eights Sketches">
+        <!-- 网格布局，放入8张手机拍的竖向长方形手绘草图 -->
+        <div class="grid-4">
+            <img src="images/crazy8-1.jpg" alt="Sketch 1">
+            <img src="images/crazy8-2.jpg" alt="Sketch 2">
+            <img src="images/crazy8-3.jpg" alt="Sketch 3">
+            <img src="images/crazy8-4.jpg" alt="Sketch 4">
+            <img src="images/crazy8-5.jpg" alt="Sketch 5">
+            <img src="images/crazy8-6.jpg" alt="Sketch 6">
+            <img src="images/crazy8-7.jpg" alt="Sketch 7">
+            <img src="images/crazy8-8.jpg" alt="Sketch 8">
         </div>
 
         <h3>Design Alternatives</h3>
         <p><strong>Alternative 1:</strong> A dashboard focused entirely on charts and graphs. (Rejected: Too boring for beginners, lacks the "Playful" requirement).</p>
-        <p><strong>Alternative 2 (Chosen):</strong> A profile-centric UI where the user's Avatar, Level, and Trophies are prominent, blending hard data (TDEE, heart rate) with gamification.</p>
+        <p><strong>Alternative 2 (Chosen):</strong> A profile-centric UI where the user's Avatar, Level, and Trophies are prominent, blending exercise with gamification.</p>
 
         <h3>Low-Fi Prototype</h3>
         <a href="https://www.figma.com/design/nBbG9Cz0wf6sQEDdsPvOKb/LevelUP?node-id=59-207&t=buSc4Sm1JERQZGi5-1" class="btn" target="_blank">View Figma Low-Fi Prototype</a>
@@ -226,37 +253,49 @@
         <h2>5. Evaluation & Reflection</h2>
         
         <h3>Usability Testing</h3>
-        <p>Tested the "Alpha" version with 3 real users at the local gym. Key findings:</p>
-        <ul>
-            <li>User 1 found the weight logging button hard to find.</li>
-            <li>User 2 loved the Trophy system but didn't understand the TDEE calculation at first glance.</li>
-            <li>User 3 requested a fixed bottom tab-bar for easier navigation on mobile.</li>
-        </ul>
-
-       <h3>Iterative Refinement (Before & After)</h3>
-<div class="grid-2">
-    <!-- 左侧：Before -->
-    <div class="iteration-item">
-        <div class="image-CrazyEights">
-            <img src="images/Before.png" alt="Before: Initial UI">
-        </div>
-        <p class="caption"><strong>Before:</strong> Cluttered layout with poor visual hierarchy and navigation issues.</p>
-    </div>
-    
-    <!-- 右侧：After -->
-    <div class="iteration-item">
-        <div class="image-CrazyEights">
-            <img src="images/After.png" alt="After: Final UI">
-        </div>
-        <p class="caption"><strong>After:</strong> Fixed navigation, clear error handling, and optimized layout for notch screens.</p>
-    </div>
-</div>
-
+        <p><strong>Method:</strong> Tested the "Alpha" version with 3 real users at the local gym.</p>
         
+        <div class="grid-2">
+            <div>
+                <h4>Key Findings</h4>
+                <ol>
+                    <li>The error prompt words on the registration page are not obvious.</li>
+                    <li>TDEE clarity — Users loved the Trophy system but found TDEE values confusing at first glance.</li>
+                    <li>Mobile navigation — All 3 users requested a fixed bottom tab-bar for easier navigation.</li>
+                </ol>
+            </div>
+            <div>
+                <h4>Recommended Fixes</h4>
+                <ol>
+                    <li>Use a striking font color and center the text.</li>
+                    <li>Add a brief tooltip next to TDEE values explaining what the number means.</li>
+                    <li>Implement a fixed bottom tab-bar (Home / Workout / Diet / Profile).</li>
+                </ol>
+            </div>
+        </div>
+
+        <h3>Iterative Refinement (Before & After)</h3>
+        <div class="grid-2">
+            <!-- 左侧：Before -->
+            <div class="iteration-item">
+                <div class="image-CrazyEights">
+                    <img src="images/Before.png" alt="Before: Initial UI">
+                </div>
+                <p class="caption"><strong>Before:</strong> Cluttered layout with poor visual hierarchy and navigation issues.</p>
+            </div>
+            
+            <!-- 右侧：After -->
+            <div class="iteration-item">
+                <div class="image-CrazyEights">
+                    <img src="images/After.png" alt="After: Final UI">
+                </div>
+                <p class="caption"><strong>After:</strong> Fixed navigation, clear error handling, and optimized layout for mobile screens.</p>
+            </div>
+        </div>
 
         <h3>Final Reflection</h3>
-        <p><strong>Social/Ethical Implications:</strong> We ensured our system promotes healthy habits rather than obsessive tracking by focusing on positive reinforcement (XP) instead of penalizing missed days heavily. </p>
-        <p><strong>Use of AI:</strong> Generative AI was used strictly according to permissions to assist in debugging CSS flexbox issues and generating SQL mock data (Vibe Coding logs are included in the GitHub <code>/ai-logs</code> folder).</p>
+        <p><strong>Social/Ethical Implications:</strong> We ensured our system promotes healthy habits rather than obsessive tracking by focusing on positive reinforcement (XP) instead of penalizing missed days heavily. To further embrace inclusive design, future iterations will consider accessibility modes for users with physical limitations.</p>
+        <p><strong>Use of AI:</strong> Generative AI was used strictly according to permissions to assist in debugging CSS flexbox issues and generating backend core logic. A detailed "Technical Reflection" and Vibe Coding logs are included in the GitHub <code>/ai-logs</code> folder to maintain full academic transparency.</p>
 
     </div>
 </body>
