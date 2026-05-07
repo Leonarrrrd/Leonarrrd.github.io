@@ -89,26 +89,27 @@ public class PetService {
      *
      * @param user The user whose pet needs to be updated
      */
-    public void onWorkoutComplete(User user) {
-        // Calculate experience gain: base 20 + up to 20 bonus from streak days
+      public void onWorkoutComplete(User user) {
+        // 1. 防御 Null (兼容旧数据库数据)
+        int currentStreak = user.getStreakDays() != null ? user.getStreakDays() : 0;
+        int currentExp = user.getPetExp() != null ? user.getPetExp() : 0;
+        int currentMood = user.getPetMood() != null ? user.getPetMood() : 100;
+        int currentEnergy = user.getPetEnergy() != null ? user.getPetEnergy() : 100;
+
+        // 2. 增加经验
         int baseExp = 20;
-        int streakBonus = Math.min(user.getStreakDays(), 10) * 2; // Max +20
+        int streakBonus = Math.min(currentStreak, 10) * 2; 
         int addedExp = baseExp + streakBonus;
+        user.setPetExp(currentExp + addedExp);
 
-        user.setPetExp(user.getPetExp() + addedExp);
+        // 3. 更新心情与体力
+        user.setPetMood(Math.min(100, currentMood + 10));
+        user.setPetEnergy(Math.max(0, currentEnergy - 30));
 
-        // Mood increases with completed workouts
-        user.setPetMood(Math.min(100, user.getPetMood() + 10));
-
-        // Energy is consumed during workout
-        user.setPetEnergy(Math.max(0, user.getPetEnergy() - 30));
-
-        // Check if user has leveled up
+        // 4. 检查升级
         checkLevelUp(user);
 
-        // Update last active timestamp for mood/energy calculations
         user.setPetLastActive(LocalDateTime.now());
-
         userRepository.save(user);
     }
 
@@ -119,15 +120,14 @@ public class PetService {
      * @param user The user whose pet needs level check
      */
     private void checkLevelUp(User user) {
-        int level = user.getPetLevel();
-        if (level >= 20) return; // Max level reached
+        int level = user.getPetLevel() != null ? user.getPetLevel() : 1;
+        int currentExp = user.getPetExp() != null ? user.getPetExp() : 0;
 
-        int currentExp = user.getPetExp();
-        int requiredExp = LEVEL_EXP_THRESHOLDS[level];
-
-        if (currentExp >= requiredExp) {
-            user.setPetLevel(level + 1);
+        // 当经验达到下一级要求，并且还没满级时，持续升级
+        while (level < 20 && currentExp >= LEVEL_EXP_THRESHOLDS[level]) {
+            level++;
         }
+        user.setPetLevel(level);
     }
 
     /**
@@ -231,39 +231,21 @@ public class PetService {
      * @param user The user whose pet progress needs calculation
      * @return Progress percentage (0-100)
      */
-    public int getExpProgress(User user) {
-        int level = user.getPetLevel();
-        int stage = user.getPetStage() != null ? user.getPetStage() : 0;
+     public int getExpProgress(User user) {
+        int level = user.getPetLevel() != null ? user.getPetLevel() : 1;
+        if (level >= 20) return 100; // 满级满进度
 
-        // Max level
-        if (level >= 20) return 100;
+        int currentExp = user.getPetExp() != null ? user.getPetExp() : 0;
+        
+        // 获取当前等级的基准经验和下一级的目标经验
+        int baseExpForCurrentLevel = LEVEL_EXP_THRESHOLDS[level - 1];
+        int expNeededForNextLevel = LEVEL_EXP_THRESHOLDS[level];
 
-        // Calculate EXP thresholds for current stage
-        int currentThreshold;
-        int nextThreshold;
+        // 计算当前级内的进度比例
+        int expInLevel = Math.max(0, currentExp - baseExpForCurrentLevel);
+        int levelExpRange = expNeededForNextLevel - baseExpForCurrentLevel;
 
-        if (stage == 0) {
-            // Baby stage: Level 0 -> 5 (evolution at level 5)
-            currentThreshold = LEVEL_EXP_THRESHOLDS[0]; // 0
-            nextThreshold = LEVEL_EXP_THRESHOLDS[5];   // 450
-        } else if (stage == 1) {
-            // Teen stage: Level 5 -> 10 (evolution at level 10)
-            currentThreshold = LEVEL_EXP_THRESHOLDS[5];  // 450
-            nextThreshold = LEVEL_EXP_THRESHOLDS[10];    // 2200
-        } else if (stage == 2) {
-            // Adult stage: Level 10 -> 20
-            currentThreshold = LEVEL_EXP_THRESHOLDS[10];  // 2200
-            nextThreshold = 9500;  // Max EXP for level 20
-        } else {
-            // Full grown stage
-            return 100;
-        }
-
-        int currentExp = user.getPetExp();
-        int expInStage = Math.max(0, currentExp - currentThreshold);
-        int expNeeded = nextThreshold - currentThreshold;
-
-        return (int) ((expInStage * 100.0) / expNeeded);
+        return (int) ((expInLevel * 100.0) / levelExpRange);
     }
 
     /**
