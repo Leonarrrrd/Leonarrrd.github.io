@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -61,6 +62,15 @@ public class User {
     private Integer xp = 0;
     private Integer streakDays = 0;
     private Integer tdee;
+
+    // 🐾 Pet System Fields
+    private String petType;           // Elemental type: fire, water, grass, electric
+    private Integer petLevel = 1;    // Pet level: 1-20
+    private Integer petExp = 0;       // Current accumulated experience points
+    private Integer petMood = 100;    // Mood value: 0-100
+    private Integer petEnergy = 100;  // Energy value: 0-100
+    private LocalDateTime petLastActive;  // Last activity timestamp
+    private Integer petStage = 0;     // Appearance stage: 0=Baby, 1=Teen, 2=Adult, 3=Full Grown
 
     // (在实际开发中，你可以使用 Lombok 的 @Data 注解来省略这些代码)
     
@@ -120,4 +130,26 @@ public class User {
     public void setTdee(Integer tdee) {
         this.tdee = tdee;
     }
+
+    // 🐾 宠物 getter/setter
+    public String getPetType() { return petType; }
+    public void setPetType(String petType) { this.petType = petType; }
+
+    public Integer getPetLevel() { return petLevel; }
+    public void setPetLevel(Integer petLevel) { this.petLevel = petLevel; }
+
+    public Integer getPetExp() { return petExp; }
+    public void setPetExp(Integer petExp) { this.petExp = petExp; }
+
+    public Integer getPetMood() { return petMood; }
+    public void setPetMood(Integer petMood) { this.petMood = petMood; }
+
+    public Integer getPetEnergy() { return petEnergy; }
+    public void setPetEnergy(Integer petEnergy) { this.petEnergy = petEnergy; }
+
+    public LocalDateTime getPetLastActive() { return petLastActive; }
+    public void setPetLastActive(LocalDateTime petLastActive) { this.petLastActive = petLastActive; }
+
+    public Integer getPetStage() { return petStage; }
+    public void setPetStage(Integer petStage) { this.petStage = petStage; }
 }
