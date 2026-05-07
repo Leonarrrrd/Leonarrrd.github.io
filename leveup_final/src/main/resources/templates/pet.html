@@ -342,10 +342,15 @@
     </div>
   </div>
 
-  <div class="level-section">
-    <div class="level-header">
+  <div class="level-header">
       <span class="level-title">Experience</span>
-      <span class="level-value">Lv.<span th:text="${user.petLevel}">1</span></span>
+      <span class="level-value">
+        Lv.<span th:text="${user.petLevel}">1</span>
+        <!-- 重点：在等级旁边加上具体的 EXP 动态数值 -->
+        <span style="font-size: 12px; color: rgba(255,255,255,0.6); font-weight: normal; margin-left: 8px;">
+           (<span th:text="${user.petExp}">0</span> XP)
+        </span>
+      </span>
     </div>
     <div class="stat-bar" style="height: 12px;">
       <div class="stat-fill exp" th:style="'width: ' + ${expProgress} + '%'"></div>
