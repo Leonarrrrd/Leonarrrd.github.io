@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta charset="utf-8" />
+  <title>Level UP</title>
+  <link rel="stylesheet" href="/css/globals.css">
+  <link rel="stylesheet" href="/css/styleguide.css">
+  
+  <style>
+    /* =========================================
+       重构后的 welcome.css (响应式 Flex 布局)
+       ========================================= */
+    
+    * { box-sizing: border-box; }
+
+    /* 1. 主容器: 全屏背景，Flex 垂直布局 */
+    .welcome-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* 让所有子元素水平居中 */
+      justify-content: space-between; /* 上下分布 */
+      min-height: 100vh;
+      width: 100%;
+      background: url(/img/welcome-screen.svg) no-repeat center center;
+      background-size: cover;
+      padding: 16px;
+    }
+
+    /* 2. Logo: 抛弃 margin-left 固定值，利用父级的 align-items: center 自动居中 */
+    .logo-level-UP {
+      width: 164px;
+      height: 92px;
+      background-image: url(/img/union.svg);
+      background-size: 100% 100%;
+      margin-top: 25vh; /* 使用视口高度(vh)让 Logo 在不同手机上下降的比例一致 */
+    }
+
+    /* 3. 底部操作区: Flex 垂直排列，告别百分比 absolute 定位 */
+    .start-or-continue {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      gap: 20px; /* 统一定义按钮、分割线、链接之间的间距 */
+      margin-bottom: 5vh; /* 距离底部留白 */
+    }
+
+    /* 4. 主按钮 (Start Now): 整合嵌套结构 */
+    .primary-button {
+      width: 100%;
+      padding: 16px;
+      background-color: var(--variable-collection-apple-blue, #007aff);
+      color: var(--white, #ffffff);
+      font-family: var(--button-font-family, sans-serif);
+      font-weight: var(--button-font-weight, bold);
+      font-size: var(--button-font-size, 16px);
+      text-align: center;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* 5. 分割线区域 (Already our user?) */
+    .divider-group {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 16px;
+      opacity: 0.6;
+    }
+
+    .divider-line {
+      flex: 1; /* 让线条自动撑满两边剩余空间 */
+      height: 1px;
+      border-top: 1px dashed var(--white, #ffffff); /* 0.3px 在很多手机上渲染不出来，改为 1px */
+    }
+
+    .divider-text {
+      color: var(--white, #ffffff);
+      font-family: var(--body-text-font-family, sans-serif);
+      font-size: var(--body-text-font-size, 14px);
+      white-space: nowrap;
+    }
+
+    /* 6. 底部登录链接 */
+    .signin-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      color: var(--variable-collection-apple-blue, #007aff);
+      font-family: var(--body-text-font-family, sans-serif);
+      font-size: var(--body-text-font-size, 14px);
+      font-weight: 500;
+    }
+
+    .signin-link .chevron {
+      width: 6px;
+      height: 9px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 欢迎屏幕主容器 -->
+  <main class="welcome-screen">
+    
+    <!-- App logo -->
+    <div class="logo-level-UP" role="img" aria-label="Level UP logo"></div>
+    
+    <!-- 底部操作区域 -->
+    <section class="start-or-continue" aria-label="Get started or sign in">
+      
+      <!-- 主按钮 -->
+      <button class="primary-button" type="button" th:onclick="|location.href='@{/signin}'|">
+        Start Now
+      </button>
+
+      <!-- 分割线 -->
+      <div class="divider-group">
+        <div class="divider-line" role="separator" aria-hidden="true"></div>
+        <span class="divider-text">Don't have an account?</span>
+        <div class="divider-line" role="separator" aria-hidden="true"></div>
+      </div>
+
+      <!-- 注册链接 -->
+      <a th:href="@{/signup}" class="signin-link" aria-label="Register a new account">
+        <span>Register a new account</span>
+        <img class="chevron" src="/img/chevron.svg" alt="" aria-hidden="true" />
+      </a>
+      
+    </section>
+
+  </main>
+
+</body>
+</html>

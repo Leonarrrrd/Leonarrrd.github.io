@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta charset="utf-8" />
+  <title>My Pet</title>
+  <link rel="stylesheet" href="/css/globals.css">
+  <link rel="stylesheet" href="/css/styleguide.css">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+      font-family: var(--body-default-font-family, sans-serif);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .pet-page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 16px;
+      padding-bottom: 100px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-top: env(safe-area-inset-top, 44px);
+    }
+
+    .action-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      text-decoration: none;
+    }
+
+    .page-title {
+      font-family: var(--title-screen-font-family);
+      font-size: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* Pet Display Area */
+    .pet-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    .pet-canvas-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
+    }
+
+    #petCanvas {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      box-shadow: 0 0 60px var(--pet-glow, rgba(255,255,255,0.2));
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .pet-name-badge {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.1);
+      padding: 8px 20px;
+      border-radius: 20px;
+    }
+
+    .pet-level {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .pet-name {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--pet-color, #fff);
+    }
+
+    /* Stats Section */
+    .stats-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      margin: 16px 0;
+    }
+
+    .stat-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stat-value {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .stat-bar {
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .stat-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+
+    .stat-fill.mood { background: linear-gradient(90deg, #ff6b6b, #ffd93d); }
+    .stat-fill.energy { background: linear-gradient(90deg, #4ecdc4, #95d5b2); }
+    .stat-fill.exp { background: linear-gradient(90deg, var(--pet-color, #fff), rgba(255,255,255,0.5)); }
+
+    /* Level Progress */
+    .level-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 16px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+    }
+
+    .level-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .level-title {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .level-value {
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--pet-color, #fff);
+    }
+
+    .evolution-hint {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .evolve-btn {
+      margin-top: 12px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #ffd93d, #ff6b35);
+      border: none;
+      border-radius: 25px;
+      color: #1a1a2e;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+      box-shadow: 0 0 20px rgba(255,217,61,0.4);
+    }
+
+    .evolve-btn:hover {
+      transform: scale(1.05);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .action-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 16px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px;
+      text-decoration: none;
+      color: #fff;
+      transition: all 0.2s;
+    }
+
+    .action-card:hover {
+      background: rgba(255,255,255,0.12);
+      transform: translateY(-2px);
+    }
+
+    .action-icon-big {
+      font-size: 24px;
+    }
+
+    .action-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Evolution Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+      border-radius: 24px;
+      padding: 32px;
+      text-align: center;
+      max-width: 300px;
+      margin: 20px;
+    }
+
+    .modal-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #ffd93d;
+    }
+
+    .modal-subtitle {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 24px;
+    }
+
+    .modal-btn {
+      padding: 12px 32px;
+      border-radius: 999px;
+      border: none;
+      background: #ffd93d;
+      color: #1a1a2e;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<main class="pet-page">
+
+  <header class="header">
+    <a th:href="@{/home}" class="action-icon">
+      <img src="/img/fi-arrow-left.svg" alt="Back" width="20" height="20" />
+    </a>
+    <h1 class="page-title">My Pet</h1>
+    <div style="width: 32px;"></div>
+  </header>
+
+  <div class="pet-display">
+    <div class="pet-canvas-container">
+      <canvas id="petCanvas" width="200" height="200"></canvas>
+    </div>
+
+    <div class="pet-name-badge">
+      <span class="pet-name"><span th:text="${user.name}"></span>'s Pet</span>
+      <span class="pet-level">Lv.<span th:text="${user.petLevel}">1</span></span>
+    </div>
+  </div>
+
+  <div class="stats-section">
+    <div class="stat-row">
+      <div class="stat-header">
+        <span class="stat-label">😊 Mood</span>
+        <span class="stat-value"><span th:text="${user.petMood}">100</span>%</span>
+      </div>
+      <div class="stat-bar">
+        <div class="stat-fill mood" th:style="'width: ' + ${user.petMood} + '%'"></div>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-header">
+        <span class="stat-label">⚡ Energy</span>
+        <span class="stat-value"><span th:text="${user.petEnergy}">100</span>%</span>
+      </div>
+      <div class="stat-bar">
+        <div class="stat-fill energy" th:style="'width: ' + ${user.petEnergy} + '%'"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="level-section">
+    <div class="level-header">
+      <span class="level-title">Experience</span>
+      <span class="level-value">Lv.<span th:text="${user.petLevel}">1</span></span>
+    </div>
+    <div class="stat-bar" style="height: 12px;">
+      <div class="stat-fill exp" th:style="'width: ' + ${expProgress} + '%'"></div>
+    </div>
+
+    <!-- 进化按钮（可点击时显示） -->
+    <button th:if="${shouldEvolve}" class="evolve-btn" onclick="triggerEvolution()">
+      ✨ Evolve Now!
+    </button>
+    <div th:unless="${shouldEvolve}" class="evolution-hint">
+      Next evolution at Lv.<span th:text="${user.petLevel} >= 20 ? ' MAX' : (${user.petLevel} + 1)">5</span>
+    </div>
+  </div>
+
+  <div class="quick-actions">
+    <a th:href="@{/workouts}" class="action-card">
+      <span class="action-icon-big">💪</span>
+      <span class="action-label">Train</span>
+    </a>
+    <a th:href="@{/home}" class="action-card">
+      <span class="action-icon-big">🏠</span>
+      <span class="action-label">Home</span>
+    </a>
+  </div>
+
+</main>
+
+<!-- Evolution Modal -->
+<div class="modal-overlay" id="evolutionModal">
+  <div class="modal-content">
+    <div class="modal-title">✨ Evolution!</div>
+    <div class="modal-subtitle">Your pet has evolved!</div>
+    <canvas id="evolutionCanvas" width="150" height="150"></canvas>
+    <div style="margin-top: 20px;">
+      <button class="modal-btn" onclick="closeEvolutionModal()">Awesome!</button>
+    </div>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  // Pet data from server
+  const petData = {
+    type: /*[[${user.petType}]]*/ 'fire',
+    level: /*[[${user.petLevel}]]*/ 1,
+    mood: /*[[${user.petMood}]]*/ 100,
+    energy: /*[[${user.petEnergy}]]*/ 100,
+    exp: /*[[${user.petExp}]]*/ 0,
+    shouldEvolve: /*[[${shouldEvolve}]]*/ false,
+    stage: /*[[${user.petStage}]]*/ 0
+  };
+
+  // Pet type colors
+  const colors = {
+    fire: { primary: '#ff6b35', secondary: '#ff9f1c', accent: '#ffcf9f', glow: 'rgba(255,107,53,0.4)' },
+    water: { primary: '#4ecdc4', secondary: '#45b7aa', accent: '#a8e6cf', glow: 'rgba(78,205,196,0.4)' },
+    grass: { primary: '#95d5b2', secondary: '#74c69d', accent: '#d8f3dc', glow: 'rgba(149,213,178,0.4)' },
+    electric: { primary: '#ffe66d', secondary: '#ffd93d', accent: '#fff3b0', glow: 'rgba(255,230,109,0.4)' }
+  };
+
+  const c = colors[petData.type] || colors.fire;
+
+  // Set CSS variable for pet color
+  if (c) {
+    document.documentElement.style.setProperty('--pet-color', c.primary);
+    document.documentElement.style.setProperty('--pet-glow', c.glow);
+  }
+
+  // Pet appearance stages:
+  // 0 = Baby, 1 = Teen, 2 = Adult, 3 = Full Grown
+
+  // Main pet drawing function
+  function drawPet(canvas, mood, energy, stage, animate = true) {
+    const ctx = canvas.getContext('2d');
+    const size = canvas.width;
+    const centerX = size / 2;
+    const centerY = size / 2;
+
+    // Size multipliers based on evolution stage
+    const bodyScale = 0.6 + stage * 0.15;
+    const headScale = 0.5 + stage * 0.18;
+
+    ctx.clearRect(0, 0, size, size);
+
+    // Animation offset
+    const bobOffset = animate ? Math.sin(Date.now() / 500) * 3 : 0;
+
+    // Shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+    ctx.beginPath();
+    ctx.ellipse(centerX, centerY + 70 * bodyScale, 35 * bodyScale, 10, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Body
+    ctx.fillStyle = c.primary;
+    ctx.beginPath();
+    ctx.ellipse(centerX, centerY + bobOffset, 40 * bodyScale, 35 * bodyScale, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Belly highlight
+    ctx.fillStyle = c.accent;
+    ctx.globalAlpha = 0.5;
+    ctx.beginPath();
+    ctx.ellipse(centerX, centerY + 10 * bodyScale + bobOffset, 25 * bodyScale, 20 * bodyScale, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Head
+    ctx.fillStyle = c.primary;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY - 25 * headScale + bobOffset, 30 * headScale, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Ears based on type and evolution stage
+    ctx.fillStyle = c.secondary;
+    const earSize = 1 + stage * 0.2;
+
+    if (petData.type === 'fire') {
+      // Flame ears - grow with evolution
+      const flameCount = 2 + stage;
+      for (let i = 0; i < flameCount; i++) {
+        const offset = (i - (flameCount-1)/2) * 8;
+        ctx.beginPath();
+        ctx.moveTo(centerX - 20 + offset, centerY - 45 * headScale + bobOffset);
+        const flameHeight = 15 + stage * 5 + Math.sin(Date.now()/200 + i) * 3;
+        ctx.quadraticCurveTo(
+          centerX - 25 + offset + i*2, centerY - 60 * headScale + bobOffset - flameHeight/2,
+          centerX - 18 + offset, centerY - 55 * headScale + bobOffset - flameHeight
+        );
+        ctx.quadraticCurveTo(
+          centerX - 15 + offset, centerY - 60 * headScale + bobOffset - flameHeight/2,
+          centerX - 18 + offset, centerY - 45 * headScale + bobOffset
+        );
+        ctx.fill();
+      }
+    } else if (petData.type === 'water') {
+      // Flowing ears
+      ctx.beginPath();
+      ctx.ellipse(centerX - 22, centerY - 35 * headScale + bobOffset, 10 * earSize, 18 * earSize, -0.3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(centerX + 22, centerY - 35 * headScale + bobOffset, 10 * earSize, 18 * earSize, 0.3, 0, Math.PI * 2);
+      ctx.fill();
+      if (stage >= 1) {
+        // Add extra flow at higher stages
+        ctx.globalAlpha = 0.5;
+        ctx.beginPath();
+        ctx.ellipse(centerX - 28, centerY - 30 + bobOffset, 6, 12, -0.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(centerX + 28, centerY - 30 + bobOffset, 6, 12, 0.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    } else if (petData.type === 'grass') {
+      // Leaf ears
+      ctx.beginPath();
+      ctx.ellipse(centerX - 20, centerY - 40 * headScale + bobOffset, 8 * earSize, 16 * earSize, -0.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(centerX + 20, centerY - 40 * headScale + bobOffset, 8 * earSize, 16 * earSize, 0.5, 0, Math.PI * 2);
+      ctx.fill();
+      // Leaf veins
+      if (stage >= 1) {
+        ctx.strokeStyle = c.accent;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(centerX - 20, centerY - 50 + bobOffset);
+        ctx.lineTo(centerX - 20, centerY - 28 * headScale + bobOffset);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(centerX + 20, centerY - 50 + bobOffset);
+        ctx.lineTo(centerX + 20, centerY - 28 * headScale + bobOffset);
+        ctx.stroke();
+      }
+    } else if (petData.type === 'electric') {
+      // Lightning ears - more dramatic with evolution
+      const boltIntensity = 1 + stage * 0.3;
+      ctx.beginPath();
+      ctx.moveTo(centerX - 22, centerY - 35 * headScale + bobOffset);
+      ctx.lineTo(centerX - 30, centerY - 55 * headScale + bobOffset);
+      ctx.lineTo(centerX - 22, centerY - 48 * headScale + bobOffset);
+      ctx.lineTo(centerX - 28, centerY - 65 * headScale * boltIntensity + bobOffset);
+      ctx.lineTo(centerX - 18, centerY - 52 * headScale + bobOffset);
+      ctx.lineTo(centerX - 24, centerY - 35 * headScale + bobOffset);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(centerX + 22, centerY - 35 * headScale + bobOffset);
+      ctx.lineTo(centerX + 30, centerY - 55 * headScale + bobOffset);
+      ctx.lineTo(centerX + 22, centerY - 48 * headScale + bobOffset);
+      ctx.lineTo(centerX + 28, centerY - 65 * headScale * boltIntensity + bobOffset);
+      ctx.lineTo(centerX + 18, centerY - 52 * headScale + bobOffset);
+      ctx.lineTo(centerX + 24, centerY - 35 * headScale + bobOffset);
+      ctx.fill();
+    }
+
+    // Eyes
+    const eyeY = centerY - 25 * headScale + bobOffset;
+    const eyeSize = 5 + stage;
+    // Mood thresholds: >50=happy, 20-50=neutral, <20=sad
+    const eyeOffset = mood > 50 ? 0 : (mood >= 20 ? -2 : -4);
+    const eyeHeight = mood >= 20 ? eyeSize : 2;
+
+    // Eye whites (if happy - mood > 50)
+    if (mood > 50) {
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.ellipse(centerX - 10, eyeY + eyeOffset, eyeSize + 1, eyeSize + 1, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(centerX + 10, eyeY + eyeOffset, eyeSize + 1, eyeSize + 1, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Pupils
+    ctx.fillStyle = '#1a1a2e';
+    ctx.beginPath();
+    ctx.ellipse(centerX - 10, eyeY + eyeOffset, eyeSize - 1, eyeHeight, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(centerX + 10, eyeY + eyeOffset, eyeSize - 1, eyeHeight, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Eye shine (if not sad - mood >= 20)
+    if (mood >= 20) {
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(centerX - 8, eyeY - 2 + eyeOffset, 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(centerX + 12, eyeY - 2 + eyeOffset, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Mouth
+    ctx.strokeStyle = '#1a1a2e';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    const mouthY = centerY - 10 * headScale + bobOffset;
+
+    if (mood > 50) {
+      // Big smile with teeth (happy)
+      ctx.beginPath();
+      ctx.arc(centerX, mouthY + 5, 8 + stage, 0.1 * Math.PI, 0.9 * Math.PI);
+      ctx.stroke();
+      // Teeth
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(centerX - 6, mouthY + 2, 12, 4 + stage);
+    } else if (mood >= 20) {
+      // Normal smile (neutral)
+      ctx.beginPath();
+      ctx.arc(centerX, mouthY + 3, 6, 0.1 * Math.PI, 0.9 * Math.PI);
+      ctx.stroke();
+    } else {
+      // Sad (depressed)
+      ctx.beginPath();
+      ctx.moveTo(centerX - 5, mouthY + 8);
+      ctx.lineTo(centerX + 5, mouthY + 8);
+      ctx.stroke();
+    }
+
+    // Cheeks (blush) - only when happy (mood > 50)
+    if (mood > 50) {
+      ctx.fillStyle = 'rgba(255,150,150,0.4)';
+      ctx.beginPath();
+      ctx.ellipse(centerX - 18, eyeY + 8, 6, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(centerX + 18, eyeY + 8, 6, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Energy sparkles
+    if (energy > 30) {
+      ctx.fillStyle = c.accent;
+      const sparkleCount = Math.floor(energy / 25);
+      const sparkleSpeed = 0.002;
+
+      for (let i = 0; i < sparkleCount; i++) {
+        const angle = (i / sparkleCount) * Math.PI * 2 + Date.now() * sparkleSpeed;
+        const radius = 55 + stage * 5;
+        const x = centerX + Math.cos(angle) * radius;
+        const y = centerY - 10 + Math.sin(angle) * radius * 0.6;
+        const sparkleSize = 2 + Math.sin(Date.now() / 200 + i) * 1;
+
+        ctx.beginPath();
+        // Star shape
+        for (let j = 0; j < 4; j++) {
+          const a = (j / 4) * Math.PI * 2 + Date.now() / 500;
+          ctx.lineTo(x + Math.cos(a) * sparkleSize, y + Math.sin(a) * sparkleSize);
+          ctx.lineTo(x + Math.cos(a + Math.PI/4) * sparkleSize/3, y + Math.sin(a + Math.PI/4) * sparkleSize/3);
+        }
+        ctx.closePath();
+        ctx.fill();
+      }
+    }
+
+    // Low energy effect
+    if (energy < 30) {
+      ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 60 + stage * 5, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // Animation loop
+  const canvas = document.getElementById('petCanvas');
+  let animationId;
+
+  function animate() {
+    drawPet(canvas, petData.mood, petData.energy, petData.stage, true);
+    animationId = requestAnimationFrame(animate);
+  }
+
+  // Start animation
+  animate();
+
+  // Manual evolution trigger
+  function triggerEvolution() {
+    fetch('/pet/evolve', { method: 'POST' })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Show evolution animation
+          const modal = document.getElementById('evolutionModal');
+          modal.classList.add('show');
+
+          // Draw evolved pet using the returned newStage
+          const evoCanvas = document.getElementById('evolutionCanvas');
+          drawPet(evoCanvas, 100, 100, data.newStage, false);
+
+          // Hide evolution button
+          const evolveBtn = document.querySelector('.evolve-btn');
+          if (evolveBtn) evolveBtn.style.display = 'none';
+        }
+      });
+  }
+
+  function closeEvolutionModal() {
+    document.getElementById('evolutionModal').classList.remove('show');
+    // Reload page to refresh state
+    location.reload();
+  }
+</script>
+
+</body>
+</html>

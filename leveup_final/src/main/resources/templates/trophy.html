@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta charset="utf-8" />
+  <title>Trophy Room</title>
+  <link rel="stylesheet" href="/css/globals.css">
+  <style>
+    body { margin: 0; background-color: #f5f6f8; font-family: -apple-system, sans-serif; }
+
+    .fixed-header {
+        position: fixed; top: 0; left: 0; right: 0; height: 100px; z-index: 100;
+        display: flex; align-items: flex-end; justify-content: space-between;
+        padding: 0 16px 15px 16px; background: rgba(245, 246, 248, 0.9);
+        backdrop-filter: blur(10px);
+    }
+    .nav-title { font-size: 28px; 
+      font-weight: 800; 
+      color: #000; 
+      margin-top: 44px; 
+    }
+
+    .scrollable-content {
+        height: 100vh; overflow-y: auto;
+        padding: 120px 12px 100px 12px;
+        box-sizing: border-box;
+    }
+
+    .fixed-tabbar {
+        position: fixed; bottom: 0; left: 0; right: 0; height: 83px; z-index: 9999;
+        background: #FFFFFF; display: flex; justify-content: space-around;
+        align-items: center; box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+        border-top-left-radius: 24px; border-top-right-radius: 24px;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .tab-item { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 50px; height: 50px; text-decoration: none; }
+    .tab-icon { width: 28px; height: 28px; background-color: #828282; -webkit-mask-size: contain; mask-size: contain; mask-repeat: no-repeat; display: block; }
+    .tab-item.active .tab-icon { background-color: #000000; }
+
+    /* 每行一个类别 */
+    .trophy-row { margin-bottom: 28px; }
+    .row-title {
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; margin-bottom: 12px; color: #333;
+    }
+
+    /* 三列：Bronze | Silver | Gold */
+    .trophy-cols {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .trophy-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 16px 8px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border: 1px solid #f0f0f0;
+      display: flex; flex-direction: column; align-items: center;
+    }
+
+    /* 彩色（已解锁）样式 */
+    .card-unlocked { }
+    /* 灰色（未解锁）样式 */
+    .card-locked { opacity: 0.5; filter: grayscale(1); }
+
+    /* 徽章图标容器 */
+    .badge-box {
+      width: 60px; height: 60px; margin-bottom: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .badge-icon { width: 60px; height: 60px; }
+
+    /* 标题和描述 */
+    .trophy-name { font-weight: 700; font-size: 11px; margin-bottom: 4px; }
+    .trophy-desc { font-size: 8px; color: #888; line-height: 1.3; }
+
+    .action-icon { width: 40px; height: 40px; background: #e9ecef; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  </style>
+</head>
+<body>
+
+<header class="fixed-header">
+    <a th:href="@{/home}" class="action-icon">
+        <img src="/img/fi-arrow-left.svg" alt="Back" width="20" height="20" />
+    </a>
+    <h1 class="nav-title">Trophy Room</h1>
+    <div style="width: 40px;"></div>
+</header>
+
+<main class="scrollable-content">
+
+  <div th:each="entry : ${trophyGroups}" class="trophy-row">
+    <!-- 行标题：类别名 -->
+    <div class="row-title" th:text="${entry.key}">Category</div>
+
+    <!-- 三列：Bronze | Silver | Gold -->
+    <div class="trophy-cols">
+
+      <!-- Bronze 列 -->
+      <div th:with="bronze=${entry.value.get('bronze')}">
+        <div th:each="t : ${bronze}"
+             th:class="${userTrophyIds.contains(t.id)} ? 'trophy-card card-unlocked' : 'trophy-card card-locked'"
+             style="margin-bottom:8px;">
+          <div class="badge-box">
+            <img src="/img/trophy/bronze.svg" class="badge-icon" alt="Bronze">
+          </div>
+          <div class="trophy-name" th:text="${t.name}">Name</div>
+          <div class="trophy-desc" th:text="${t.description}">Desc</div>
+        </div>
+      </div>
+
+      <!-- Silver 列 -->
+      <div th:with="silver=${entry.value.get('silver')}">
+        <div th:each="t : ${silver}"
+             th:class="${userTrophyIds.contains(t.id)} ? 'trophy-card card-unlocked' : 'trophy-card card-locked'"
+             style="margin-bottom:8px;">
+          <div class="badge-box">
+            <img src="/img/trophy/silver.svg" class="badge-icon" alt="Silver">
+          </div>
+          <div class="trophy-name" th:text="${t.name}">Name</div>
+          <div class="trophy-desc" th:text="${t.description}">Desc</div>
+        </div>
+      </div>
+
+      <!-- Gold 列 -->
+      <div th:with="gold=${entry.value.get('gold')}">
+        <div th:each="t : ${gold}"
+             th:class="${userTrophyIds.contains(t.id)} ? 'trophy-card card-unlocked' : 'trophy-card card-locked'"
+             style="margin-bottom:8px;">
+          <div class="badge-box">
+            <img src="/img/trophy/gold.svg" class="badge-icon" alt="Gold">
+          </div>
+          <div class="trophy-name" th:text="${t.name}">Name</div>
+          <div class="trophy-desc" th:text="${t.description}">Desc</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<nav class="fixed-tabbar">
+    <a th:href="@{/home}" class="tab-item">
+        <div class="tab-icon" style="-webkit-mask-image: url('/img/home.svg'); mask-image: url('/img/home.svg');"></div>
+    </a>
+    <a th:href="@{/explore}" class="tab-item">
+        <div class="tab-icon" style="-webkit-mask-image: url('/img/explore.svg'); mask-image: url('/img/explore.svg');"></div>
+    </a>
+    <a th:href="@{/person}" class="tab-item">
+        <div class="tab-icon" style="-webkit-mask-image: url('/img/profile.svg'); mask-image: url('/img/profile.svg');"></div>
+    </a>
+</nav>
+
+</body>
+</html>

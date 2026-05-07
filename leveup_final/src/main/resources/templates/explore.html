@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta charset="utf-8" />
+  <title>Explore</title>
+  <link rel="stylesheet" href="/css/globals.css">
+  <link rel="stylesheet" href="/css/styleguide.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      background-color: #f5f6f8;
+      font-family: var(--body-default-font-family, sans-serif);
+    }
+
+    .explore-page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content-area {
+      flex: 1;
+      display: flex;
+    }
+
+    .parts-sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 83px;
+      width: 80px;
+      background: #f5f6f8;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      z-index: 100;
+    }
+
+    .right-panel {
+      flex: 1;
+      margin-left: 80px;
+      background: #f5f6f8;
+      padding: 16px;
+      padding-bottom: 100px;
+    }
+
+    .panel-title {
+      position: sticky;
+      top: 0;
+      background: #f5f6f8;
+      z-index: 10;
+      font-size: 20px;
+      text-align: center;
+      font-weight: bold;
+      color: #333;
+      padding-top: 44px;
+    }
+
+    .part-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 10px;
+      font-size: 15px;
+      color: #333;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+      user-select: none;
+    }
+
+    .part-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 2px;
+      bottom: 2px;
+      width: 3px;
+      background: #007aff;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .part-item.active {
+      color: #007aff;
+      font-weight: bold;
+    }
+
+    .part-item.active::before {
+      opacity: 1;
+    }
+
+    .part-item .arrow {
+      margin-left: auto;
+      font-size: 10px;
+      transition: transform 0.2s;
+    }
+
+    .part-item.open .arrow {
+      transform: rotate(90deg);
+    }
+
+    .sub-parts {
+      display: none;
+      flex-direction: column;
+      background: #f8f9fa;
+      padding-left: 10px;
+    }
+
+    .sub-parts.open {
+      display: flex;
+    }
+
+    .sub-part-item {
+      padding: 6px 10px;
+      font-size: 12px;
+      color: #555;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .sub-part-item:hover,
+    .sub-part-item.active {
+      color: #007aff;
+      font-weight: bold;
+    }
+
+    .panel-hint {
+      font-size: 13px;
+      color: #9e9e9e;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .exercise-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .exercise-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .exercise-card .exercise-gif {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #f0f0f0;
+    }
+
+    .exercise-card .exercise-name {
+      font-size: 11px;
+      color: #333;
+      text-align: center;
+    }
+
+    .tab-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 83px;
+      background-color: #FFFFFF;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding-bottom: env(safe-area-inset-bottom, 20px);
+      z-index: 100;
+    }
+
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      text-decoration: none;
+      color: #828282;
+    }
+
+    .tab-item.active {
+      color: #000000;
+    }
+
+    .tab-icon {
+      width: 28px;
+      height: 28px;
+      background-color: currentColor;
+      mask-size: contain;
+      -webkit-mask-size: contain;
+      mask-repeat: no-repeat;
+      -webkit-mask-repeat: no-repeat;
+      mask-position: center;
+      -webkit-mask-position: center;
+    }
+  </style>
+</head>
+<body>
+
+<main class="explore-page">
+  <div class="content-area">
+    <div class="parts-sidebar">
+      <!-- Chest -->
+      <div class="part-item" data-part="chest">
+        Chest
+        <span class="arrow">&#8250;</span>
+      </div>
+      <div class="sub-parts" id="sub-chest">
+        <div class="sub-part-item" data-sub="upper-chest">Upper</div>
+        <div class="sub-part-item" data-sub="middle-chest">Middle</div>
+        <div class="sub-part-item" data-sub="lower-chest">Lower</div>
+      </div>
+
+      <!-- Back -->
+      <div class="part-item" data-part="back">
+        Back
+        <span class="arrow">&#8250;</span>
+      </div>
+      <div class="sub-parts" id="sub-back">
+        <div class="sub-part-item" data-sub="upper-back">Upper</div>
+        <div class="sub-part-item" data-sub="lower-back">Lower</div>
+      </div>
+
+      <!-- Legs -->
+      <div class="part-item" data-part="legs">
+        Legs
+        <span class="arrow">&#8250;</span>
+      </div>
+      <div class="sub-parts" id="sub-legs">
+        <div class="sub-part-item" data-sub="front-legs">Front</div>
+        <div class="sub-part-item" data-sub="side-legs">Side</div>
+      </div>
+
+      <!-- Shoulders -->
+      <div class="part-item" data-part="shoulders">
+        Shoulders
+        <span class="arrow">&#8250;</span>
+      </div>
+      <div class="sub-parts" id="sub-shoulders">
+        <div class="sub-part-item" data-sub="front-delt">Front</div>
+        <div class="sub-part-item" data-sub="rear-delt">Rear</div>
+        <div class="sub-part-item" data-sub="side-delt">Side</div>
+        <div class="sub-part-item" data-sub="traps">Traps</div>
+      </div>
+
+      <!-- Arms -->
+      <div class="part-item" data-part="arms">
+        Arms
+        <span class="arrow">&#8250;</span>
+      </div>
+      <div class="sub-parts" id="sub-arms">
+        <div class="sub-part-item" data-sub="biceps">Biceps</div>
+        <div class="sub-part-item" data-sub="triceps">Triceps</div>
+      </div>
+
+      <!-- Abs -->
+      <div class="part-item" data-part="abs">
+        Abs
+        <span class="arrow">&#8250;</span>
+      </div>
+      <div class="sub-parts" id="sub-abs">
+        <div class="sub-part-item" data-sub="upper-abs">Upper</div>
+        <div class="sub-part-item" data-sub="lower-abs">Lower</div>
+        <div class="sub-part-item" data-sub="side-abs">Side</div>
+      </div>
+    </div>
+
+    <div class="right-panel" id="rightPanel">
+      <div class="panel-title" id="panelTitle">Select a Muscle Group</div>
+      <div class="panel-hint" id="panelHint">Tap a category on the left to start</div>
+      <div class="exercise-grid" id="exerciseGrid" style="display:none;"></div>
+    </div>
+  </div>
+
+  <nav class="tab-bar">
+    <a th:href="@{/home}" class="tab-item">
+      <div class="tab-icon" style="mask-image: url('/img/home.svg'); -webkit-mask-image: url('/img/home.svg');"></div>
+    </a>
+
+    <a th:href="@{/explore}" class="tab-item active">
+      <div class="tab-icon" style="mask-image: url('/img/explore.svg'); -webkit-mask-image: url('/img/explore.svg');"></div>
+    </a>
+
+    <a th:href="@{/person}" class="tab-item">
+      <div class="tab-icon" style="mask-image: url('/img/profile.svg'); -webkit-mask-image: url('/img/profile.svg');"></div>
+    </a>
+  </nav>
+
+</main>
+
+<script>
+var currentPart = null;
+var currentSub = null;
+
+document.querySelectorAll('.part-item').forEach(function(item) {
+  item.addEventListener('click', function() {
+    var part = this.dataset.part;
+    var subEl = document.getElementById('sub-' + part);
+
+    if (currentPart === part) {
+      this.classList.remove('open');
+      subEl.classList.remove('open');
+      this.classList.remove('active');
+      currentPart = null;
+      currentSub = null;
+      document.getElementById('panelTitle').textContent = 'Select a Muscle Group';
+      document.getElementById('panelHint').style.display = 'block';
+      document.getElementById('exerciseGrid').style.display = 'none';
+      return;
+    }
+
+    if (currentPart) {
+      var prevSub = document.getElementById('sub-' + currentPart);
+      if (prevSub) prevSub.classList.remove('open');
+      document.querySelector('[data-part="' + currentPart + '"]').classList.remove('open', 'active');
+    }
+
+    document.querySelectorAll('.sub-part-item').forEach(function(s) {
+      s.classList.remove('active');
+    });
+
+    this.classList.add('open', 'active');
+    subEl.classList.add('open');
+    currentPart = part;
+    currentSub = null;
+    document.getElementById('panelTitle').textContent = this.childNodes[0].textContent.trim();
+    document.getElementById('panelHint').style.display = 'block';
+    document.getElementById('exerciseGrid').style.display = 'none';
+  });
+});
+
+document.querySelectorAll('.sub-part-item').forEach(function(item) {
+  item.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var sub = this.dataset.sub;
+
+    document.querySelectorAll('.sub-part-item').forEach(function(s) {
+      s.classList.remove('active');
+    });
+    this.classList.add('active');
+    currentSub = sub;
+
+    var subNames = {
+      'upper-chest': 'Upper Chest', 'middle-chest': 'Middle Chest', 'lower-chest': 'Lower Chest',
+      'upper-back': 'Upper Back', 'lower-back': 'Lower Back',
+      'front-legs': 'Front Legs', 'side-legs': 'Side Legs',
+      'front-delt': 'Front Delt', 'rear-delt': 'Rear Delt', 'side-delt': 'Side Delt', 'traps': 'Traps',
+      'biceps': 'Biceps', 'triceps': 'Triceps',
+      'upper-abs': 'Upper Abs', 'lower-abs': 'Lower Abs', 'side-abs': 'Side Abs'
+    };
+
+    document.getElementById('panelTitle').textContent = subNames[sub] || sub;
+    document.getElementById('panelHint').style.display = 'none';
+
+    var exercises = exerciseData[sub] || [];
+    var grid = document.getElementById('exerciseGrid');
+    grid.style.display = 'grid';
+    grid.innerHTML = '';
+
+    exercises.forEach(function(ex) {
+      var card = document.createElement('div');
+      card.className = 'exercise-card';
+      card.innerHTML = '<img class="exercise-gif" src="' + ex.gif + '" alt="' + ex.name + '" />' +
+                       '<span class="exercise-name">' + ex.name + '</span>';
+      grid.appendChild(card);
+    });
+
+    if (exercises.length === 0) {
+      grid.innerHTML = '<div style="grid-column:span 2;text-align:center;color:#9e9e9e;font-size:13px;padding:40px 0;">No exercises available</div>';
+    }
+  });
+});
+
+var exerciseData = {
+  'upper-chest': [
+    { name: 'Barbell Incline Bench Press', gif: '/img/upper-chest/barbell-incline-bench-press.gif' },
+    { name: 'Incline Push-Up', gif: '/img/upper-chest/incline-push-up.gif' },
+    { name: 'Incline Shoulder-Touch Push-Up', gif: '/img/upper-chest/incline-shoulder-touch-push-up.gif' },
+    { name: 'Hammer Machine Chest Press', gif: '/img/upper-chest/hammer-machine-chest-press.gif' },
+    { name: 'Seated Chest Press', gif: '/img/upper-chest/seated-chest-press.gif' }
+  ],
+  'middle-chest': [
+    { name: 'Standard Push-Up', gif: '/img/middle-chest/standard-push-up.gif' },
+    { name: 'Machine Fly', gif: '/img/middle-chest/machine-fly.gif' },
+    { name: 'Cable Low Fly', gif: '/img/middle-chest/cable-low-fly.gif' },
+    { name: 'Dumbbell Flat Fly', gif: '/img/middle-chest/dumbbell-flat-fly.gif' }
+  ],
+  'lower-chest': [
+    { name: 'Barbell Decline Bench Press', gif: '/img/lower-chest/barbell-decline-bench-press.gif' },
+    { name: 'Kneeling Decline Push-Up', gif: '/img/lower-chest/kneeling-decline-push-up.gif' },
+    { name: 'Decline Push-Up', gif: '/img/lower-chest/decline-push-up.gif' },
+    { name: 'Decline Shoulder-Touch Push-Up', gif: '/img/lower-chest/decline-shoulder-touch-push-up.gif' }
+  ],
+  'upper-back': [
+    { name: 'Band Bent-Over Row', gif: '/img/upper-back/band-bent-over-row.gif' },
+    { name: 'Band Assisted Pull-Up', gif: '/img/upper-back/band-assisted-pull-up.gif' },
+    { name: 'Band Seated Row', gif: '/img/upper-back/band-seated-row.gif' },
+    { name: 'Assisted Pull-Up', gif: '/img/upper-back/assisted-pull-up.gif' },
+    { name: 'Weighted Pull-Up', gif: '/img/upper-back/weighted-pull-up.gif' },
+    { name: 'Barbell Row', gif: '/img/upper-back/barbell-row.gif' },
+    { name: 'Barbell Incline Row', gif: '/img/upper-back/barbell-incline-row.gif' },
+    { name: 'Machine Single-Arm Row', gif: '/img/upper-back/machine-single-arm-row.gif' },
+    { name: 'Machine Row', gif: '/img/upper-back/machine-row.gif' },
+    { name: 'Kneeling Band Pulldown', gif: '/img/upper-back/kneeling-band-pulldown.gif' },
+    { name: 'Wide-Grip Seated Row', gif: '/img/upper-back/wide-grip-seated-row.gif' },
+    { name: 'Hex Bar Row', gif: '/img/upper-back/hex-bar-row.gif' },
+    { name: 'Cable Reverse-Grip Pulldown', gif: '/img/upper-back/cable-reverse-grip-pulldown.gif' },
+    { name: 'Cable Pulldown', gif: '/img/upper-back/cable-pulldown.gif' },
+    { name: 'Cable Behind-Neck Pulldown', gif: '/img/upper-back/cable-behind-neck-pulldown.gif' },
+    { name: 'Cable Seated Row', gif: '/img/upper-back/cable-seated-row.gif' },
+    { name: 'Dumbbell Row', gif: '/img/upper-back/dumbbell-row.gif' },
+    { name: 'Dumbbell Incline Row', gif: '/img/upper-back/dumbbell-incline-row.gif' },
+    { name: 'Bodyweight Pull-Up', gif: '/img/upper-back/bodyweight-pull-up.gif' }
+  ],
+  'lower-back': [
+    { name: 'Band Single-Arm Row', gif: '/img/lower-back/band-single-arm-row.gif' },
+    { name: 'Barbell Row', gif: '/img/lower-back/barbell-row.gif' },
+    { name: 'Barbell Reverse-Grip Row', gif: '/img/lower-back/barbell-reverse-grip-row.gif' },
+    { name: 'Kneeling Band Single-Arm Pull', gif: '/img/lower-back/kneeling-band-single-arm-pull.gif' },
+    { name: 'Cable Single-Arm Row', gif: '/img/lower-back/cable-single-arm-row.gif' },
+    { name: 'Cable Single-Arm Pull', gif: '/img/lower-back/cable-single-arm-pull.gif' },
+    { name: 'Cable Straight-Arm Pushdown', gif: '/img/lower-back/cable-straight-arm-pushdown.gif' },
+  ],
+  'front-legs': [
+    { name: 'Leg Press', gif: '/img/front-legs/leg-press.gif' },
+    { name: 'Barbell Single-Leg Step-Up', gif: '/img/front-legs/barbell-single-leg-step-up.gif' },
+    { name: 'Barbell Single-Leg Squat', gif: '/img/front-legs/barbell-single-leg-squat.gif' },
+    { name: 'Barbell Front Squat', gif: '/img/front-legs/barbell-front-squat.gif' },
+    { name: 'Barbell Squat', gif: '/img/front-legs/barbell-squat.gif' },
+    { name: 'Kettlebell Goblet Squat', gif: '/img/front-legs/kettlebell-goblet-squat.gif' },
+    { name: 'Kettlebell Front Squat', gif: '/img/front-legs/kettlebell-front-squat.gif' },
+    { name: 'Wall Sit', gif: '/img/front-legs/wall-sit.gif' },
+    { name: 'Hex Bar Squat', gif: '/img/front-legs/hex-bar-squat.gif' },
+    { name: 'Smith Single-Leg Squat', gif: '/img/front-legs/smith-single-leg-squat.gif' },
+    { name: 'Smith Lunge', gif: '/img/front-legs/smith-lunge.gif' },
+    { name: 'Smith Front Squat', gif: '/img/front-legs/smith-front-squat.gif' },
+    { name: 'Smith Squat', gif: '/img/front-legs/smith-squat.gif' },
+    { name: 'Smith Leg Press', gif: '/img/front-legs/smith-leg-press.gif' },
+    { name: 'Machine Leg Press', gif: '/img/front-legs/machine-leg-press.gif' },
+    { name: 'Dumbbell Single-Leg Step-Up', gif: '/img/front-legs/dumbbell-single-leg-step-up.gif' },
+    { name: 'Dumbbell Lunge', gif: '/img/front-legs/dumbbell-lunge.gif' },
+    { name: 'Dumbbell Front Squat', gif: '/img/front-legs/dumbbell-front-squat.gif' },
+    { name: 'Dumbbell Squat', gif: '/img/front-legs/dumbbell-squat.gif' },
+    { name: 'Bodyweight Squat', gif: '/img/front-legs/bodyweight-squat.gif' },
+    { name: 'Seated Single-Leg Extension', gif: '/img/front-legs/seated-single-leg-extension.gif' },
+    { name: 'Seated Leg Extension', gif: '/img/front-legs/seated-leg-extension.gif' }
+  ],
+  'side-legs': [
+    { name: 'Barbell Deadlift', gif: '/img/side-legs/barbell-deadlift.gif' },
+    { name: 'Barbell Good Morning', gif: '/img/side-legs/barbell-good-morning.gif' },
+    { name: 'Machine Single-Leg Curl', gif: '/img/side-legs/machine-single-leg-curl.gif' },
+    { name: 'Machine Leg Curl', gif: '/img/side-legs/machine-leg-curl.gif' },
+    { name: 'Kettlebell Deadlift', gif: '/img/side-legs/kettlebell-deadlift.gif' },
+    { name: 'Sumo Squat', gif: '/img/side-legs/sumo-squat.gif' },
+    { name: 'Dumbbell Trap-Bar Sumo Squat', gif: '/img/side-legs/dumbbell-trap-bar-sumo-squat.gif' },
+    { name: 'Dumbbell Farmer Walk', gif: '/img/side-legs/dumbbell-farmer-walk.gif' },
+      ],
+  'front-delt': [
+    { name: 'Band Front Raise', gif: '/img/front-delt/band-front-raise.gif' },
+    { name: 'Barbell Machine Press', gif: '/img/front-delt/barbell-machine-press.gif' },
+    { name: 'Barbell Standing Press', gif: '/img/front-delt/barbell-standing-press.gif' },
+    { name: 'Machine Press', gif: '/img/front-delt/machine-press.gif' },
+    { name: 'Cable Single-Arm Front Raise', gif: '/img/front-delt/cable-single-arm-front-raise.gif' },
+    { name: 'Seated Dumbbell Press', gif: '/img/front-delt/seated-dumbbell-press.gif' }
+  ],
+  'side-delt': [
+    { name: 'Band Lateral Raise', gif: '/img/side-delt/band-lateral-raise.gif' },
+    { name: 'Band Shoulder Abduction', gif: '/img/side-delt/band-shoulder-abduction.gif' },
+    { name: 'Fixed Prone Lateral Raise', gif: '/img/side-delt/fixed-prone-lateral-raise.gif' },
+    { name: 'Cable Single-Arm Lateral Raise', gif: '/img/side-delt/cable-single-arm-lateral-raise.gif' },
+    { name: 'Cable Cross Lateral Raise', gif: '/img/side-delt/cable-cross-lateral-raise.gif' }
+  ],
+  'rear-delt': [
+    { name: 'Band Standing Reverse Fly', gif: '/img/rear-delt/band-standing-reverse-fly.gif' },
+    { name: 'Band Face Pull', gif: '/img/rear-delt/band-face-pull.gif' },
+    { name: 'Machine Reverse Fly', gif: '/img/rear-delt/machine-reverse-fly.gif' },
+    { name: 'Dumbbell Prone Fly', gif: '/img/rear-delt/dumbbell-prone-fly.gif' },
+    { name: 'Seated Prone Fly', gif: '/img/rear-delt/seated-prone-fly.gif' }
+  ],
+  'traps': [
+    { name: 'Band Upright Row', gif: '/img/traps/band-upright-row.gif' },
+    { name: 'Barbell Upright Row', gif: '/img/traps/barbell-upright-row.gif' },
+    { name: 'Barbell Bent-Over Row', gif: '/img/traps/barbell-bent-over-row.gif' },
+    { name: 'Smith Upright Row', gif: '/img/traps/smith-upright-row.gif' },
+    { name: 'Smith Bent-Over Row', gif: '/img/traps/smith-bent-over-row.gif' }
+  ],
+  'biceps': [
+    { name: 'Preacher Bench Dumbbell Curl', gif: '/img/biceps/preacher-bench-dumbbell-curl.gif' },
+    { name: 'Incline Dumbbell Curl', gif: '/img/biceps/incline-dumbbell-curl.gif' },
+    { name: 'Cable Hammer Curl', gif: '/img/biceps/cable-hammer-curl.gif' },
+    { name: 'Standing Hammer Curl', gif: '/img/biceps/standing-hammer-curl.gif' },
+    { name: 'Seated Hammer Curl', gif: '/img/biceps/seated-hammer-curl.gif' }
+  ],
+  'triceps': [
+    { name: 'Bench Dip', gif: '/img/triceps/bench-dip.gif' },
+    { name: 'Parallel Bar Dip', gif: '/img/triceps/parallel-bar-dip.gif' },
+    { name: 'Dumbbell Single-Arm Extension', gif: '/img/triceps/dumbbell-single-arm-extension.gif' },
+    { name: 'Standing Single-Arm Dumbbell Extension', gif: '/img/triceps/standing-single-arm-dumbbell-extension.gif' },
+    { name: 'Seated Single-Arm Dumbbell Extension', gif: '/img/triceps/seated-single-arm-dumbbell-extension.gif' }
+  ],
+  'upper-abs': [
+    { name: 'Knee-Up Crunch', gif: '/img/upper-abs/knee-up-crunch.gif' },
+    { name: 'Weighted Crunch', gif: '/img/upper-abs/weighted-crunch.gif' },
+    { name: 'Crunch', gif: '/img/upper-abs/crunch.gif' },
+    { name: 'Wall Knee-Up Crunch', gif: '/img/upper-abs/wall-knee-up-crunch.gif' },
+    { name: 'Wall Hands-to-Toes Touch', gif: '/img/upper-abs/wall-hands-to-toes-touch.gif' },
+    { name: 'Cable Kneeling Crunch', gif: '/img/upper-abs/cable-kneeling-crunch.gif' }
+  ],
+  'lower-abs': [
+    { name: 'Reverse Crunch', gif: '/img/lower-abs/reverse-crunch.gif' },
+    { name: 'Weighted Hanging Leg Raise Hip Thrust', gif: '/img/lower-abs/weighted-hanging-leg-raise-hip-thrust.gif' },
+    { name: 'Pulse Up', gif: '/img/lower-abs/pulse-up.gif' },
+    { name: 'Flat Lying Leg Raise', gif: '/img/lower-abs/flat-lying-leg-raise.gif' },
+    { name: 'Incline Reverse Crunch', gif: '/img/lower-abs/incline-reverse-crunch.gif' },
+    { name: 'Cable Standing Hip Raise', gif: '/img/lower-abs/cable-standing-hip-raise.gif' }
+  ],
+  'side-abs': [
+    { name: 'Side Waist Touch Heel', gif: '/img/side-abs/side-waist-touch-heel.gif' },
+    { name: 'Leg-Up Russian Twist', gif: '/img/side-abs/leg-up-russian-twist.gif' },
+    { name: 'Russian Twist', gif: '/img/side-abs/russian-twist.gif' },
+    { name: 'Weighted Russian Twist', gif: '/img/side-abs/weighted-russian-twist.gif' },
+    { name: 'Wall Side Crunch', gif: '/img/side-abs/wall-side-crunch.gif' },
+    { name: 'Incline Board Twist Sit-Up', gif: '/img/side-abs/incline-board-twist-sit-up.gif' }
+  ]
+};
+</script>
+
+</body>
+</html>

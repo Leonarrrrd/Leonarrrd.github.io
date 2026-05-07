@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta charset="utf-8" />
+  <title>Select Your Frequency</title>
+  <link rel="stylesheet" href="/css/globals.css">
+  <link rel="stylesheet" href="/css/styleguide.css">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background-color: #ffffff;
+      font-family: var(--body-default-font-family, sans-serif);
+      color: var(--color-neutral-n800, #333);
+    }
+
+    .frequency-page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 16px;
+      padding-bottom: 32px;
+    }
+
+    .header-variant {
+      display: flex;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-top: env(safe-area-inset-top, 44px);
+    }
+
+    .action-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background-color: var(--color-neutral-n100, #f5f5f5);
+      border-radius: 50%;
+      text-decoration: none;
+      margin-top: 44px;
+  
+    }
+
+    .page-title {
+      font-family: var(--title-screen-font-family);
+      font-size: var(--title-screen-font-size, 24px);
+      text-align: center;
+      margin: 20px 0 32px 0; 
+    }
+
+    .stepper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+      padding: 0 40px;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--color-neutral-n300, #e0e0e0);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-neutral-n400, #9e9e9e);
+      z-index: 2;
+      transition: all 0.3s;
+    }
+
+    .step.completed .step-circle {
+      border-color: var(--variable-collection-apple-blue, #007aff);
+      background: var(--variable-collection-apple-blue, #007aff);
+      color: #fff;
+    }
+
+    .step.active .step-circle {
+      border-color: var(--variable-collection-apple-blue, #007aff);
+      color: var(--variable-collection-apple-blue, #007aff);
+    }
+
+    .step-label {
+      font-size: 11px;
+      color: var(--color-neutral-n500, #757575);
+      margin-top: 6px;
+      text-align: center;
+      max-width: 60px;
+    }
+
+    .step.active .step-label {
+      color: var(--variable-collection-apple-blue, #007aff);
+      font-weight: 500;
+    }
+
+    .step.completed .step-label {
+      color: var(--color-neutral-n800, #333);
+    }
+
+    .step-line {
+      width: 60px;
+      height: 2px;
+      background: var(--color-neutral-n300, #e0e0e0);
+      margin: 0 4px;
+      margin-bottom: 22px;
+      transition: background 0.3s;
+    }
+
+    .step-line.completed {
+      background: var(--variable-collection-apple-blue, #007aff);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: var(--body-default-font-size, 14px);
+      font-weight: var(--body-default-font-weight, 500);
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .radio-card {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      background-color: var(--color-shade-white, #fff);
+      border: 2px solid var(--color-neutral-n200, #e0e0e0);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .radio-card:hover {
+      border-color: var(--variable-collection-apple-blue, #007aff);
+    }
+
+    .radio-card.selected {
+      border-color: var(--variable-collection-apple-blue, #007aff);
+      background-color: rgba(0, 122, 255, 0.05);
+    }
+
+    .radio-card input[type="radio"] {
+      display: none;
+    }
+
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--color-neutral-n800, #333);
+    }
+
+    .radio-icon {
+      font-size: 20px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 16px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background-color: var(--variable-collection-apple-blue, #007aff);
+      color: #fff;
+    }
+
+    .error-message {
+      color: #ff3b30;
+      font-size: 14px;
+      text-align: center;
+      padding: 12px;
+      background: rgba(255, 59, 48, 0.1);
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<main class="frequency-page">
+
+  <header class="header-variant">
+    <a th:href="@{/goal}" class="action-icon">
+      <img src="/img/fi-arrow-left.svg" alt="Back arrow" width="20" height="20" />
+    </a>
+    
+  </header>
+<h1 class="page-title">Select Your Frequency</h1>
+  <div class="stepper">
+    <div class="step completed">
+      <div class="step-circle">✓</div>
+      <div class="step-label">Register</div>
+    </div>
+    <div class="step-line completed"></div>
+    <div class="step completed">
+      <div class="step-circle">✓</div>
+      <div class="step-label">Goal</div>
+    </div>
+    <div class="step-line completed"></div>
+    <div class="step active">
+      <div class="step-circle">3</div>
+      <div class="step-label">Frequency</div>
+    </div>
+  </div>
+
+  <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+  <form th:action="@{/register-frequency}" method="post">
+
+    <div class="form-group">
+      <label class="form-label">What is your activity level?</label>
+      <div class="radio-group">
+        <label class="radio-card" onclick="selectFrequency(1.2)">
+          <input type="radio" name="trainingFrequency" value="1.2" required />
+          <span class="radio-label">
+            <span class="radio-icon">🛌</span>
+            <span>I’ve been swamped lately and haven’t had time to practise</span>
+          </span>
+        </label>
+        <label class="radio-card" onclick="selectFrequency(1.375)">
+          <input type="radio" name="trainingFrequency" value="1.375" />
+          <span class="radio-label">
+            <span class="radio-icon">🚶</span>
+            <span>I go for a walk every day and do some exercise at the weekend</span>
+          </span>
+        </label>
+        <label class="radio-card" onclick="selectFrequency(1.55)">
+          <input type="radio" name="trainingFrequency" value="1.55" />
+          <span class="radio-label">
+            <span class="radio-icon">🏋️</span>
+            <span>I go to the gym 3–4 times a week without fail</span>
+          </span>
+        </label>
+        <label class="radio-card" onclick="selectFrequency(1.725)">
+          <input type="radio" name="trainingFrequency" value="1.725" />
+          <span class="radio-label">
+            <span class="radio-icon">💪</span>
+            <span>Exercise at least five times a week</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button type="submit" class="btn btn-primary">Finish</button>
+    </div>
+
+  </form>
+
+</main>
+
+<script>
+  function selectFrequency(value) {
+    document.querySelectorAll('input[name="trainingFrequency"]').forEach(r => r.checked = (r.value === String(value)));
+    document.querySelectorAll('.radio-card').forEach(c => {
+      c.classList.remove('selected');
+      if (c.querySelector('input').value === String(value)) c.classList.add('selected');
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta charset="utf-8" />
+  <title>Choose Your Pet</title>
+  <link rel="stylesheet" href="/css/globals.css">
+  <link rel="stylesheet" href="/css/styleguide.css">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+      font-family: var(--body-default-font-family, sans-serif);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .pet-choose-page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 16px;
+      padding-bottom: 32px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-top: env(safe-area-inset-top, 44px);
+    }
+
+    .action-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      text-decoration: none;
+    }
+
+    .page-title {
+      font-family: var(--title-screen-font-family);
+      font-size: 28px;
+      text-align: center;
+      margin: 20px 0 8px 0;
+      font-weight: bold;
+    }
+
+    .page-subtitle {
+      text-align: center;
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    .pet-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      padding: 0 8px;
+    }
+
+    .pet-card {
+      background: rgba(255,255,255,0.08);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pet-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .pet-card.selected {
+      border-color: var(--pet-color, #fff);
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 0 30px rgba(255,255,255,0.1);
+    }
+
+    .pet-card[data-type="fire"] { --pet-color: #ff6b35; }
+    .pet-card[data-type="water"] { --pet-color: #4ecdc4; }
+    .pet-card[data-type="grass"] { --pet-color: #95d5b2; }
+    .pet-card[data-type="electric"] { --pet-color: #ffe66d; }
+
+    .pet-card.selected[data-type="fire"] { border-color: #ff6b35; box-shadow: 0 0 30px rgba(255,107,53,0.3); }
+    .pet-card.selected[data-type="water"] { border-color: #4ecdc4; box-shadow: 0 0 30px rgba(78,205,196,0.3); }
+    .pet-card.selected[data-type="grass"] { border-color: #95d5b2; box-shadow: 0 0 30px rgba(149,213,178,0.3); }
+    .pet-card.selected[data-type="electric"] { border-color: #ffe66d; box-shadow: 0 0 30px rgba(255,230,109,0.3); }
+
+    .pet-preview {
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pet-name {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--pet-color, #fff);
+    }
+
+    .pet-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .pet-stats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .pet-stat {
+      font-size: 10px;
+      padding: 4px 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: auto;
+      padding: 0 8px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 16px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background-color: var(--pet-color, #fff);
+      color: #1a1a2e;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background-color: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+    }
+
+    input[type="hidden"] {
+      display: none;
+    }
+
+    /* Canvas styling */
+    canvas {
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+
+<main class="pet-choose-page">
+
+  <header class="header">
+    <a th:href="@{/home}" class="action-icon">
+      <img src="/img/fi-arrow-left.svg" alt="Back arrow" width="20" height="20" />
+    </a>
+  </header>
+
+  <h1 class="page-title">Choose Your Partner</h1>
+  <p class="page-subtitle">Your pet will grow with your training progress</p>
+
+  <form th:action="@{/pet/choose}" method="post" id="petForm">
+    <input type="hidden" name="petType" id="selectedPetType" value="" />
+
+    <div class="pet-grid">
+      <!-- Fire Pet -->
+      <div class="pet-card" data-type="fire" onclick="selectPet('fire')">
+        <div class="pet-preview">
+          <canvas id="preview-fire" width="100" height="100"></canvas>
+        </div>
+        <div class="pet-name">Blaze</div>
+        <div class="pet-desc">Full of energy, loves intense workouts</div>
+        <div class="pet-stats">
+          <span class="pet-stat">🔥 Fire</span>
+          <span class="pet-stat">ATK +20%</span>
+        </div>
+      </div>
+
+      <!-- Water Pet -->
+      <div class="pet-card" data-type="water" onclick="selectPet('water')">
+        <div class="pet-preview">
+          <canvas id="preview-water" width="100" height="100"></canvas>
+        </div>
+        <div class="pet-name">Aqua</div>
+        <div class="pet-desc">Calm & balanced, perfect for yoga</div>
+        <div class="pet-stats">
+          <span class="pet-stat">💧 Water</span>
+          <span class="pet-stat">DEF +20%</span>
+        </div>
+      </div>
+
+      <!-- Grass Pet -->
+      <div class="pet-card" data-type="grass" onclick="selectPet('grass')">
+        <div class="pet-preview">
+          <canvas id="preview-grass" width="100" height="100"></canvas>
+        </div>
+        <div class="pet-name">Leaf</div>
+        <div class="pet-desc">Patient & persistent, loves consistency</div>
+        <div class="pet-stats">
+          <span class="pet-stat">🌿 Grass</span>
+          <span class="pet-stat">EXP +20%</span>
+        </div>
+      </div>
+
+      <!-- Electric Pet -->
+      <div class="pet-card" data-type="electric" onclick="selectPet('electric')">
+        <div class="pet-preview">
+          <canvas id="preview-electric" width="100" height="100"></canvas>
+        </div>
+        <div class="pet-name">Spark</div>
+        <div class="pet-desc">Quick learner, great for HIIT</div>
+        <div class="pet-stats">
+          <span class="pet-stat">⚡ Electric</span>
+          <span class="pet-stat">SPD +20%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button type="submit" class="btn btn-primary" id="confirmBtn" disabled>Confirm</button>
+    </div>
+  </form>
+
+</main>
+
+<script>
+  let selectedType = null;
+
+  // Pet type colors
+  const colors = {
+    fire: { primary: '#ff6b35', secondary: '#ff9f1c', accent: '#ffcf9f' },
+    water: { primary: '#4ecdc4', secondary: '#45b7aa', accent: '#a8e6cf' },
+    grass: { primary: '#95d5b2', secondary: '#74c69d', accent: '#d8f3dc' },
+    electric: { primary: '#ffe66d', secondary: '#ffd93d', accent: '#fff3b0' }
+  };
+
+  // Draw pet preview on canvas
+  function drawPetPreview(canvasId, type, mood = 80, energy = 100) {
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext('2d');
+    const c = colors[type];
+    const size = 100;
+
+    ctx.clearRect(0, 0, size, size);
+
+    // Body
+    ctx.fillStyle = c.primary;
+    ctx.beginPath();
+    ctx.ellipse(50, 55, 30, 28, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Head
+    ctx.fillStyle = c.primary;
+    ctx.beginPath();
+    ctx.arc(50, 35, 22, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Ears based on type
+    ctx.fillStyle = c.secondary;
+    if (type === 'fire') {
+      // Flame ears
+      ctx.beginPath();
+      ctx.moveTo(30, 25); ctx.lineTo(25, 8); ctx.lineTo(35, 18); ctx.fill();
+      ctx.moveTo(70, 25); ctx.lineTo(75, 8); ctx.lineTo(65, 18); ctx.fill();
+    } else if (type === 'water') {
+      // Flowing ears
+      ctx.beginPath();
+      ctx.ellipse(28, 20, 8, 12, -0.3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(72, 20, 8, 12, 0.3, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (type === 'grass') {
+      // Leaf ears
+      ctx.beginPath();
+      ctx.ellipse(28, 18, 6, 14, -0.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(72, 18, 6, 14, 0.5, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (type === 'electric') {
+      // Lightning ears
+      ctx.beginPath();
+      ctx.moveTo(28, 20); ctx.lineTo(20, 5); ctx.lineTo(30, 15); ctx.lineTo(22, 5); ctx.lineTo(32, 18);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(72, 20); ctx.lineTo(80, 5); ctx.lineTo(70, 15); ctx.lineTo(78, 5); ctx.lineTo(68, 18);
+      ctx.fill();
+    }
+
+    // Eyes
+    const eyeY = 32;
+    const eyeOffset = mood > 50 ? 0 : (mood > 20 ? -2 : -4);
+    ctx.fillStyle = '#1a1a2e';
+    ctx.beginPath();
+    ctx.ellipse(42, eyeY + eyeOffset, 4, mood > 20 ? 5 : 2, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(58, eyeY + eyeOffset, 4, mood > 20 ? 5 : 2, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Eye shine
+    if (mood > 20) {
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(43, eyeY - 1 + eyeOffset, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(59, eyeY - 1 + eyeOffset, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Mouth (happy if good mood)
+    ctx.strokeStyle = '#1a1a2e';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    if (mood > 60) {
+      ctx.arc(50, 42, 6, 0.1 * Math.PI, 0.9 * Math.PI);
+    } else if (mood > 30) {
+      ctx.moveTo(45, 44); ctx.lineTo(55, 44);
+    } else {
+      ctx.arc(50, 50, 4, 1.1 * Math.PI, 1.9 * Math.PI);
+    }
+    ctx.stroke();
+
+    // Cheeks (blush)
+    if (mood > 70) {
+      ctx.fillStyle = 'rgba(255,150,150,0.4)';
+      ctx.beginPath();
+      ctx.ellipse(35, 38, 5, 3, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(65, 38, 5, 3, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Energy indicator (sparkle)
+    if (energy > 50) {
+      ctx.fillStyle = c.accent;
+      const sparkleCount = Math.floor(energy / 25);
+      for (let i = 0; i < sparkleCount; i++) {
+        const angle = (i / sparkleCount) * Math.PI * 2 + Date.now() / 1000;
+        const x = 50 + Math.cos(angle) * 38;
+        const y = 35 + Math.sin(angle) * 35;
+        ctx.beginPath();
+        ctx.arc(x, y, 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+
+  function selectPet(type) {
+    selectedType = type;
+
+    document.querySelectorAll('.pet-card').forEach(c => c.classList.remove('selected'));
+    document.querySelector(`.pet-card[data-type="${type}"]`).classList.add('selected');
+
+    document.getElementById('selectedPetType').value = type;
+    document.getElementById('confirmBtn').disabled = false;
+  }
+
+  // Initialize previews
+  window.onload = function() {
+    ['fire', 'water', 'grass', 'electric'].forEach(type => {
+      drawPetPreview(`preview-${type}`, type, 80, 80);
+    });
+  };
+</script>
+
+</body>
+</html>
