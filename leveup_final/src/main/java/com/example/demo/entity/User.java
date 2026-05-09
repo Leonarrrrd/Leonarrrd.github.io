@@ -72,7 +72,7 @@ public class User {
     private LocalDateTime petLastActive;  // Last activity timestamp
     private Integer petStage = 0;     // Appearance stage: 0=Baby, 1=Teen, 2=Adult, 3=Full Grown
 
-    // (在实际开发中，你可以使用 Lombok 的 @Data 注解来省略这些代码)
+   
     
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -131,7 +131,7 @@ public class User {
         this.tdee = tdee;
     }
 
-    // 🐾 宠物 getter/setter
+  
     public String getPetType() { return petType; }
     public void setPetType(String petType) { this.petType = petType; }
 
