@@ -180,19 +180,19 @@ input::-webkit-contacts-auto-fill-button {
     <div class="form-group">
       <label class="form-label" for="email">Email</label>
       <div class="input-wrapper">
-        <input class="form-input" id="email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+        <input class="form-input" id="email" type="email" name="email" placeholder="cpt208@cpt208.com" autocomplete="email" required />
       </div>
     </div>
     <!-- Password -->
     <div class="form-group">
       <label class="form-label" for="password">Password</label>
       <div class="input-wrapper">
-        <input class="form-input" id="password" type="password" name="password" placeholder="*********" minlength="8" autocomplete="current-password" aria-describedby="password-hint" />
+        <input class="form-input" id="password" type="password" name="password" placeholder="cpt208" minlength="6" autocomplete="current-password" aria-describedby="password-hint" />
         <button type="button" class="toggle-password" aria-label="Toggle password visibility" data-target="password">
           <img src="/img/fi-eye-off.svg" alt="Hide password" width="20" height="20" />
         </button>
       </div>
-      <span class="hint-text" id="password-hint">must contain 8 char.</span>
+      <span class="hint-text" id="password-hint">must contain 6 char.</span>
     </div>
 
     <!-- Error message display -->
@@ -212,17 +212,5 @@ input::-webkit-contacts-auto-fill-button {
 
 </main>
 
-  // Password visibility toggle logic
-  document.querySelectorAll('.toggle-password').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var targetId = btn.getAttribute('data-target');
-      var input = document.getElementById(targetId);
-      if (input) {
-        var isPassword = input.type === 'password';
-        input.type = isPassword ? 'text' : 'password';
-        btn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
-      }
-    });
-  });
 </body>
 </html>
