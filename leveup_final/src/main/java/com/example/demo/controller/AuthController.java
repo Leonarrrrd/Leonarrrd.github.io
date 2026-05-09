@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +16,6 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import com.example.demo.service.WeightLogService;
 
-import java.time.LocalDate;
-
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -26,7 +26,7 @@ public class AuthController {
     @Autowired private UserRepository userRepository;
     @Autowired private WeightLogService weightLogService;
 
-    
+    // 页面跳转
     @GetMapping("/")
     public String welcomePage() { return "welcome"; }
 
@@ -57,7 +57,6 @@ public class AuthController {
         model.addAttribute("todayMonth", today.getMonthValue());
         model.addAttribute("todayDay", today.getDayOfMonth());
 
-        
         var allWeightLogs = weightLogService.getAllWeightLogs(freshUser.getId());
         model.addAttribute("weightLogs", allWeightLogs);
         return "person";
@@ -73,6 +72,7 @@ public class AuthController {
         return "redirect:/person";
     }
 
+  
     @GetMapping("/goal")
     public String goalPage(HttpSession session) {
         if (session.getAttribute("loggedInUser") == null) {
@@ -81,6 +81,7 @@ public class AuthController {
         return "goal";
     }
 
+ 
     @PostMapping("/register-goal")
     public String registerGoal(@RequestParam String goal,
                               HttpSession session) {
@@ -90,6 +91,7 @@ public class AuthController {
         return "redirect:/frequency";
     }
 
+
     @GetMapping("/frequency")
     public String frequencyPage(HttpSession session) {
         if (session.getAttribute("loggedInUser") == null) {
@@ -98,11 +100,13 @@ public class AuthController {
         return "frequency";
     }
 
+  
     @PostMapping("/register-frequency")
     public String registerFrequency(@RequestParam Double trainingFrequency,
                                     HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
 
+        
         double bmr;
         if ("man".equals(user.getGender())) {
             bmr = (10 * user.getWeight()) + (6.25 * user.getHeight())
@@ -120,6 +124,7 @@ public class AuthController {
         return "redirect:/pet/choose";
     }
 
+    
     @GetMapping("/check-email")
     @ResponseBody
     public String checkEmail(@RequestParam String email) {
@@ -134,6 +139,7 @@ public String homepage(HttpSession session, Model model) {
     User sessionUser = (User) session.getAttribute("loggedInUser");
     if (sessionUser == null) return "redirect:/signin";
     
+    
     User freshUser = userRepository.findById(sessionUser.getId()).get();
     model.addAttribute("user", freshUser);
     
@@ -141,16 +147,19 @@ public String homepage(HttpSession session, Model model) {
 }
     
 
+
     @PostMapping("/register")
     public String processRegister(@Valid User user, BindingResult result,
                                   @RequestParam String confirmPassword,
-                         
+                                  Model model, HttpSession session) {
+      
         if (result.hasErrors()) {
             model.addAttribute("error", result.getFieldError().getDefaultMessage());
             model.addAttribute("user", user);
             return "signup";
         }
 
+        
         if (!user.getPassword().equals(confirmPassword)) {
             model.addAttribute("error", "Passwords do not match");
             model.addAttribute("user", user);
@@ -159,11 +168,12 @@ public String homepage(HttpSession session, Model model) {
 
         try {
             userService.registerUser(user);
+          
             User savedUser = userRepository.findByEmail(user.getEmail())
                     .orElseThrow(() -> new Exception("User not found after registration"));
-        
+           
             weightLogService.saveWeight(savedUser.getId(), LocalDate.now(), savedUser.getWeight());
-            
+            // 6. 存入 session
             session.setAttribute("loggedInUser", savedUser);
             return "redirect:/goal";
         } catch (Exception e) {
@@ -173,7 +183,7 @@ public String homepage(HttpSession session, Model model) {
         }
     }
 
-   
+    
     @PostMapping("/signin")
     public String handleLogin(@RequestParam String email,
                               @RequestParam String password,
@@ -189,7 +199,7 @@ public String homepage(HttpSession session, Model model) {
         }
     }
 
- 
+    
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
