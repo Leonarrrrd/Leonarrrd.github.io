@@ -1,4 +1,5 @@
 package com.example.demo.entity;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -6,8 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -24,7 +23,6 @@ public class User {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    @Email(message = "Invalid email format")
     @NotBlank(message = "Email cannot be blank")
     private String email;
 
@@ -63,7 +61,6 @@ public class User {
     private Integer streakDays = 0;
     private Integer tdee;
 
-    // 🐾 Pet System Fields
     private String petType;           // Elemental type: fire, water, grass, electric
     private Integer petLevel = 1;    // Pet level: 1-20
     private Integer petExp = 0;       // Current accumulated experience points
@@ -72,7 +69,6 @@ public class User {
     private LocalDateTime petLastActive;  // Last activity timestamp
     private Integer petStage = 0;     // Appearance stage: 0=Baby, 1=Teen, 2=Adult, 3=Full Grown
 
-   
     
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -131,7 +127,6 @@ public class User {
         this.tdee = tdee;
     }
 
-  
     public String getPetType() { return petType; }
     public void setPetType(String petType) { this.petType = petType; }
 
