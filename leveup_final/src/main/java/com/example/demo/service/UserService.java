@@ -15,20 +15,19 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); // 加 final 消除警告
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    // 注册逻辑
+   
     public void registerUser(User user) throws Exception {
-        // 使用 Optional 判断邮箱是否存在
+        
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new Exception("该邮箱已被注册！");
+            throw new Exception("This email is already registered!");
         }
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         userRepository.save(user);
     }
 
-    // 登录验证
     public User authenticate(String email, String rawPassword) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
