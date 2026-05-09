@@ -6,66 +6,58 @@
     <title>LevelUP Process Portfolio - C3-3</title>
     <style>
 
-        /* ==== 修改后的 Evidence 图片布局 (上三下二) ==== */
         .image-row {
             display: flex;
-            flex-wrap: wrap;         /* 关键：允许换行 */
-            gap: 15px;               /* 间距 */
+            flex-wrap: wrap;         
+            gap: 15px;               
             width: 100%;
             margin-bottom: 10px;
-            justify-content: center; /* 关键：让第二排的2张图自动居中 */
+            justify-content: center; 
         }
 
         .image-row img {
-            /* 关键：一行3张图，自动减去 gap 的分配宽度 */
             width: calc(33.333% - 10px); 
-            aspect-ratio: 4 / 3;     /* 保持相片比例 */
-            object-fit: cover;       /* 裁剪多余部分，保证不拉伸变形 */
+            aspect-ratio: 4 / 3;     
+            object-fit: cover;       
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        /* ============================================== */
         
-        /* 迭代Before/After 容器样式 */
         .image-CrazyEights {
-            width: 100%;             /* 容器占据 100% 宽度 */
-            display: flex;           /* 开启弹性布局 */
-            justify-content: center; /* 图片居中显示 */
-            margin: 20px 0;          /* 上下留出 20px 间距 */
+            width: 100%;             
+            display: flex;           
+            justify-content: center; 
+            margin: 20px 0;          
         }
 
         .image-CrazyEights img {
-            max-width: 100%;         /* 图片最大宽度不超过容器 */
-            height: auto;            /* 高度自适应，防止变形 */
-            border-radius: 12px;     /* 保持圆角风格一致 */
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* 添加轻微阴影提升质感 */
-            border: 1px solid #e2e8f0; /* 添加细边框，适应白底图片 */
+            max-width: 100%;         
+            height: auto;            
+            border-radius: 12px;     
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+            border: 1px solid #e2e8f0; 
         }
 
-        /* ==== 用于 Crazy Eights (8张图：上四下四长方形排版) ==== */
         .grid-4 { 
             display: grid; 
-            grid-template-columns: repeat(4, 1fr); /* 强制分为4列 */
-            gap: 15px; /* 图片之间的间隙 */
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 15px; 
             margin-bottom: 2rem;
         }
 
         .grid-4 img {
             width: 100%;
-            aspect-ratio: 3 / 4; /* 强制图片显示为竖向长方形(手机拍照常用比例) */
-            object-fit: cover; /* 裁剪多余部分，保证网格对齐且不拉伸变形 */
+            aspect-ratio: 3 / 4; 
+            object-fit: cover; 
             border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             border: 1px solid #e2e8f0;
         }
-        /* ============================================== */
 
-        /* 迭代项的容器 */
         .iteration-item {
-            text-align: center; /* 文字居中 */
+            text-align: center; 
         }
 
-        /* 说明文字样式 */
         .caption {
             font-size: 0.9rem;
             color: #64748b;
@@ -90,19 +82,16 @@
         ul, ol { margin-bottom: 1.5rem; padding-left: 1.5rem; color: #475569; }
         li { margin-bottom: 0.5rem; }
         
-        /* 表格样式 */
         table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
         th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
         th { background: #f1f5f9; font-weight: 600; color: #0f172a; }
         
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         
-        /* Persona 卡片 */
         .persona-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; }
         .persona-name { font-size: 1.4rem; font-weight: bold; color: #0f172a; margin-bottom: 0.5rem; }
         .tag { display: inline-block; background: #dbeafe; color: #1d4ed8; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; margin-right: 0.5rem; margin-bottom: 1rem;}
         
-        /* 链接按钮 */
         .btn { display: inline-block; background: #3b82f6; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; margin-right: 10px; margin-bottom: 1rem;}
         .btn:hover { background: #2563eb; }
     </style>
@@ -188,7 +177,6 @@
         <h2>3. Ideation & Alternatives</h2>
         
         <h3>The "Crazy Eights"</h3>
-        <!-- 网格布局，放入8张手机拍的竖向长方形手绘草图 -->
         <div class="grid-4">
             <img src="images/crazy8-1.jpg" alt="Sketch 1">
             <img src="images/crazy8-2.jpg" alt="Sketch 2">
@@ -276,7 +264,6 @@
 
         <h3>Iterative Refinement (Before & After)</h3>
         <div class="grid-2">
-            <!-- 左侧：Before -->
             <div class="iteration-item">
                 <div class="image-CrazyEights">
                     <img src="images/Before.png" alt="Before: Initial UI">
@@ -284,7 +271,6 @@
                 <p class="caption"><strong>Before:</strong> Cluttered layout with poor visual hierarchy and navigation issues.</p>
             </div>
             
-            <!-- 右侧：After -->
             <div class="iteration-item">
                 <div class="image-CrazyEights">
                     <img src="images/After.png" alt="After: Final UI">
@@ -295,7 +281,25 @@
 
         <h3>Final Reflection</h3>
         <p><strong>Social/Ethical Implications:</strong> We ensured our system promotes healthy habits rather than obsessive tracking by focusing on positive reinforcement (XP) instead of penalizing missed days heavily. To further embrace inclusive design, future iterations will consider accessibility modes for users with physical limitations.</p>
-        <p><strong>Use of AI:</strong> Generative AI was used strictly according to permissions to assist in debugging CSS flexbox issues and generating backend core logic. A detailed "Technical Reflection" and Vibe Coding logs are included in the GitHub <code>/ai-logs</code> folder to maintain full academic transparency.</p>
+        
+        <h3>Technical Reflection on AI Use</h3>
+        <p>Generative AI was used strictly according to permissions for "vibe coding" core backend logic and debugging responsive layouts. Below are two specific examples using the POA framework:</p>
+        
+        <div class="grid-2">
+            <div class="persona-card">
+                <h4 style="margin-top: 0; color: #3b82f6;">Example 1: Workout Generation Logic (Backend)</h4>
+                <p><strong>P (Prompt):</strong> "Write a Java method for a Spring Boot controller that takes a muscle group (e.g., 'Chest'), groups database exercises by category, and randomly selects them based on a predefined ratio array (e.g., 2:1:1)."</p>
+                <p><strong>O (Outcome):</strong> The AI provided a functional base algorithm using <code>Collections.shuffle()</code>. However, there was a "state loss" bug: the exercises previewed on the frontend didn't match the final plan saved in the database because the backend was regenerating the list upon confirmation.</p>
+                <p><strong>A (Action):</strong> I modified the hardcoded ratio arrays to match our fitness design requirements. To fix the state loss, I discarded the AI's secondary generation logic and manually added hidden <code>&lt;input&gt;</code> tags in the Thymeleaf template to pass the exact <code>exerciseIds</code> back to the controller.</p>
+            </div>
+
+            <div class="persona-card">
+                <h4 style="margin-top: 0; color: #3b82f6;">Example 2: Virtual Pet & Progress Bar Layout (Frontend)</h4>
+                <p><strong>P (Prompt):</strong> "In my Thymeleaf homepage, the virtual pet canvas overlaps with the text on small mobile screens, and the XP progress bar gets compressed to 0px height. How can I fix this responsive layout?"</p>
+                <p><strong>O (Outcome):</strong> The AI accurately identified that the flexbox container was causing the issue. It provided CSS fixes using <code>flex-shrink: 0</code> and <code>min-height</code>. The progress bar fix worked perfectly, but the pet canvas was still slightly clipped at the bottom on certain aspect ratios.</p>
+                <p><strong>A (Action):</strong> I applied the <code>flex-shrink: 0</code> solution for the XP bar. For the pet canvas, I refined the AI's code by manually implementing absolute positioning with <code>top: 50%; transform: translateY(-50%);</code> to ensure the virtual pet remains perfectly vertically centered regardless of screen size.</p>
+            </div>
+        </div>
 
     </div>
 </body>
